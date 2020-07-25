@@ -226,3 +226,30 @@
     --ion-tab-bar-background: #1f1f1f;
   }
 }
+section {
+  margin-top: 1em;
+  margin-bottom: 2.5em;
+}
+
+ion-input {
+  --background: white;
+  --padding-start: 15px;
+  --padding-end: 15px;
+  --padding-top: 15px;
+  --padding-bottom: 15px;
+  font-size: 3.6rem;
+}
+
+section:not(.full-width),
+.full-width > header {
+  padding: 0 10px;
+}
+
+@font-face {
+  font-family: AppFont;
+  src: url("../assets/fonts/Oxygen-Regular.ttf");
+}
+
+:root {
+  --ion-font-family: 'AppFont';
+}

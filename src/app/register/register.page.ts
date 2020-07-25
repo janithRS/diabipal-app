@@ -3,6 +3,8 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {auth} from 'firebase/app';
 import {AlertController} from "@ionic/angular";
 import {Router} from "@angular/router";
+import {UserService} from "../user.service";
+import {AngularFirestore} from "@angular/fire/firestore";
 
 @Component({
     selector: 'app-register',
@@ -14,7 +16,7 @@ export class RegisterPage implements OnInit {
     password: string = "";
     cpassword: string = "";
 
-    constructor(public auth: AngularFireAuth, public alert: AlertController, public router: Router) {
+    constructor(public auth: AngularFireAuth, public alert: AlertController, public router: Router, public afstore: AngularFirestore, public user: UserService) {
     }
 
     ngOnInit() {
@@ -28,15 +30,26 @@ export class RegisterPage implements OnInit {
         }
         try {
             const res = await this.auth.createUserWithEmailAndPassword(username, password)
+
+            this.afstore.doc(`users/${res.user.uid}`).set({
+                username
+            })
+
+            this.user.setUser({
+                username,
+                uid: res.user.uid
+            })
+
             await this.showAlert("Success!", "Welcome aboard")
-            await this.router.navigate(['/home'])
+            await this.router.navigate(['/tabs'])
+
         } catch (e) {
             console.dir(e)
             await this.showAlert("Error!", e.message)
         }
     }
 
-    async showAlert(header: string, message: string){
+    async showAlert(header: string, message: string) {
         const alert = await this.alert.create({
             header,
             message,
