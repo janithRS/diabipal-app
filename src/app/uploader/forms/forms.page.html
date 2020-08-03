@@ -16,14 +16,14 @@
     <ion-item-sliding>
       <ion-item>
         <ion-label position="flaoting">Sex</ion-label>
-        <ion-select interface="popover">
-          <ion-select-option>Male</ion-select-option>
-          <ion-select-option>Female</ion-select-option>
+        <ion-select (ionChange)="selectTagSex($event)" interface="popover">
+          <ion-select-option value="1">Male</ion-select-option>
+          <ion-select-option value="0">Female</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
         <ion-label position="floating">BMI</ion-label>
-        <ion-input type="number" required></ion-input>
+        <ion-input type="number" [(ngModel)]="bmi" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Glucose</ion-label>
