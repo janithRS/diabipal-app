@@ -16,8 +16,13 @@ export class RegisterPage implements OnInit {
     password: string = "";
     cpassword: string = "";
 
-    constructor(public auth: AngularFireAuth, public alert: AlertController, public router: Router, public afstore: AngularFirestore, public user: UserService) {
-    }
+    constructor(
+        public auth: AngularFireAuth, 
+        public alert: AlertController, 
+        public router: Router, 
+        public afstore: AngularFirestore, 
+        public user: UserService
+        ) {}
 
     ngOnInit() {
     }

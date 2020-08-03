@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: UploaderPage
+  },  {
+    path: 'forms',
+    loadChildren: () => import('./forms/forms.module').then( m => m.FormsPageModule)
   }
+
 ];
 
 @NgModule({

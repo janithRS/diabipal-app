@@ -1,0 +1,112 @@
+<!-- <style>
+  :root {
+    --ion-safe-area-top: 20px;
+    --ion-safe-area-bottom: 22px;
+  }
+</style> -->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Medical Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding>
+      <ion-item>
+        <ion-label position="flaoting">Sex</ion-label>
+        <ion-select interface="popover">
+          <ion-select-option>Male</ion-select-option>
+          <ion-select-option>Female</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">BMI</ion-label>
+        <ion-input type="number" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Glucose</ion-label>
+        <ion-input type="number" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Blood Pressure</ion-label>
+        <ion-input type="number" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Skin Thickness</ion-label>
+        <ion-input type="number" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Insulin</ion-label>
+        <ion-input type="number" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">PED</ion-label>
+        <ion-input type="number" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="hidden">
+        <ion-label position="floating">Currently pregnant</ion-label>
+        <ion-select value="">
+          <ion-select-option value="1">Yes</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Age</ion-label>
+        <ion-input type="number" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Hypertension</ion-label>
+        <ion-input type="number" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Experienced strokes</ion-label>
+        <ion-select value="">
+          <ion-select-option value="1">Yes</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Current hypertension condition</ion-label>
+        <ion-select value="">
+          <ion-select-option value="1">Yes</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>      
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Current diabetic condition</ion-label>
+        <ion-select value="">
+          <ion-select-option value="1">Yes</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>      
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Currently using BP medication</ion-label>
+        <ion-select value="">
+          <ion-select-option value="1">Yes</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>       </ion-item>
+      <ion-item>
+        <ion-label position="floating">Cholesterol level</ion-label>
+        <ion-input type="number" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Systolic Blood Pressure</ion-label>
+        <ion-input type="number" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Diabolic Blood Pressure</ion-label>
+        <ion-input type="number" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Cigarrette intake per day</ion-label>
+        <ion-input type="number" required></ion-input>
+      </ion-item>
+
+      <ion-button class="ion-padding" color="primary" expand="full"
+        >Enter Details
+      </ion-button>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
