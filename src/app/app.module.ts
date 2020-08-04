@@ -19,6 +19,7 @@ import {AngularFireStorageModule} from '@angular/fire/storage';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { File } from '@ionic-native/File/ngx';
 import { MediaCapture } from '@ionic-native/media-capture/ngx';
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
 import {environment} from '../environments/environment';
 
@@ -43,6 +44,7 @@ import {environment} from '../environments/environment';
         ImagePicker,
         MediaCapture,
         File,
+        PhotoViewer
     ],
     bootstrap: [AppComponent]
 })
