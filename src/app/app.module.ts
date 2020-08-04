@@ -16,6 +16,10 @@ import {UserService} from "./user.service";
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import { File } from '@ionic-native/File/ngx';
+import { MediaCapture } from '@ionic-native/media-capture/ngx';
+
 import {environment} from '../environments/environment';
 
 @NgModule({
@@ -35,7 +39,10 @@ import {environment} from '../environments/environment';
         StatusBar,
         SplashScreen,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
-        UserService
+        UserService,
+        ImagePicker,
+        MediaCapture,
+        File,
     ],
     bootstrap: [AppComponent]
 })
