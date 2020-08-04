@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from 'rxjs';
 
 @Component({
   selector: "app-forms",
@@ -7,12 +8,13 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
   styleUrls: ["./forms.page.scss"],
 })
 export class FormsPage implements OnInit {
+  constructor(private http: HttpClient) { }
 
-  constructor(private http: HttpClient) {}
-
-  hidden: boolean = true;
-  cardioPredictionURL: string;
-  body = {}
+  hidden: boolean = true
+  cardioPredictionURL: string
+  diabetesPredictionURL: string
+  optionValues: Array<Object> = [1,0]
+  
 
   //diabetes data
   bmi: string = "";
@@ -47,23 +49,39 @@ export class FormsPage implements OnInit {
     this.stroke = e.detail.value;
   }
 
-  selectTagHypertesnion(e){
+  selectTagHypertesnion(e) {
     this.hypertension = e.detail.value;
   }
 
-  selectTagDiabetes(e){
+  selectTagDiabetes(e) {
     this.diabetes = e.detail.value;
   }
 
-  selectTagBPmeds(e){
+  selectTagBPmeds(e) {
     this.bpmeds = e.detail.value;
+    console.log(this.bpmeds);
   }
- 
 
-  cardioPrediction() {
+  setheaders(): any{
+    return {
+      headers : new HttpHeaders()
+        .append("Content-Type", "application/json")
+        .append("Access-Control-Allow-Headers", "Content-Type")
+        .append("Access-Control-Allow-Origin", "*")
+    }
+  }
 
-    this.cardioPredictionURL = " http://127.0.0.1:5000/predict";
-    this.body = {
+  cardioPrediction() { 
+
+    // let headers = this.setheaders()
+    let headers: HttpHeaders = new HttpHeaders()
+        .append("Content-Type", "application/json")
+        .append("Access-Control-Allow-Headers", "Content-Type")
+        .append("Access-Control-Allow-Origin", "*")
+
+    this.cardioPredictionURL = "http://127.0.0.1:5000/predict";
+
+    let postData = {
       bmi: this.bmi,
       diabetes: this.diabetes,
       diaBp: this.diaBp,
@@ -77,11 +95,41 @@ export class FormsPage implements OnInit {
       age: this.age,
       sex: this.sex,
     };
-
-    this.http.post(this.cardioPredictionURL, JSON.stringify(this.body)).subscribe(data =>{
-      console.log(data)
-    })
+    console.log(postData);
+    this.http
+      .post(this.cardioPredictionURL, JSON.stringify(postData), {headers})
+      .subscribe((data) => {
+        console.log(data);
+      });
   }
 
-  ngOnInit() {}
+
+  diabetesPrediction() {
+
+    // let headers: HttpHeaders = new HttpHeaders()
+    //   .append("Content-Type", "application/json")
+    //   .append("Access-Control-Allow-Headers", "Content-Type")
+    //   .append("Access-Control-Allow-Origin", "*");
+
+      let headers = this.setheaders()
+
+    this.diabetesPredictionURL = "https://diabipal.herokuapp.com/predict";
+
+    let diabetesData = {
+      bmi: this.bmi,
+      glu: this.glu,
+      bpmeds: this.bpmeds,
+      age: this.age,
+      sex: this.sex,
+      preg: this.preg,
+      ins: this.ins,
+      ped: this.ped,
+    };
+    console.log(diabetesData);
+    this.http.post(this.diabetesPredictionURL, diabetesData, { headers }).subscribe((data) => {
+      console.log(data);
+    });
+  }
+
+  ngOnInit() { }
 }
