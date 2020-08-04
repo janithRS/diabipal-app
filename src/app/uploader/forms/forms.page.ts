@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 @Component({
   selector: "app-forms",
@@ -7,7 +7,12 @@ import { HttpClient } from "@angular/common/http";
   styleUrls: ["./forms.page.scss"],
 })
 export class FormsPage implements OnInit {
+
+  constructor(private http: HttpClient) {}
+
   hidden: boolean = true;
+  cardioPredictionURL: string;
+  body = {}
 
   //diabetes data
   bmi: string = "";
@@ -38,9 +43,45 @@ export class FormsPage implements OnInit {
     this.preg = e.detail.value;
   }
 
-  constructor(private http: HttpClient) {}
+  selectTagStrokes(e) {
+    this.stroke = e.detail.value;
+  }
 
-  todoUrl: string = "https://jsonplaceholder.typicode.com/todos/";
+  selectTagHypertesnion(e){
+    this.hypertension = e.detail.value;
+  }
+
+  selectTagDiabetes(e){
+    this.diabetes = e.detail.value;
+  }
+
+  selectTagBPmeds(e){
+    this.bpmeds = e.detail.value;
+  }
+ 
+
+  cardioPrediction() {
+
+    this.cardioPredictionURL = " http://127.0.0.1:5000/predict";
+    this.body = {
+      bmi: this.bmi,
+      diabetes: this.diabetes,
+      diaBp: this.diaBp,
+      sysBp: this.sysBp,
+      glu: this.glu,
+      totChol: this.totChol,
+      bpmeds: this.bpmeds,
+      stroke: this.stroke,
+      hypertension: this.hypertension,
+      cigs: this.cigs,
+      age: this.age,
+      sex: this.sex,
+    };
+
+    this.http.post(this.cardioPredictionURL, JSON.stringify(this.body)).subscribe(data =>{
+      console.log(data)
+    })
+  }
 
   ngOnInit() {}
 }
