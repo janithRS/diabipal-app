@@ -1,0 +1,102 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Medical Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding>
+      <ion-item>
+        <ion-label position="flaoting">Sex</ion-label>
+        <ion-select (ionChange)="selectTagSex($event)" interface="popover">
+          <ion-select-option value="1">Male</ion-select-option>
+          <ion-select-option value="0">Female</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">BMI</ion-label>
+        <ion-input type="number" [(ngModel)]="form.bmi"required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Glucose</ion-label>
+        <ion-input type="number" [(ngModel)]="form.glu" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Blood Pressure</ion-label>
+        <ion-input type="number" [(ngModel)]="form.bp" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Skin Thickness</ion-label>
+        <ion-input type="number" [(ngModel)]="form.skin" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Insulin</ion-label>
+        <ion-input type="number" [(ngModel)]="form.ins" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">PED</ion-label>
+        <ion-input type="number" [(ngModel)]="form.ped" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="hidden">
+        <ion-label position="floating">Currently pregnant</ion-label>
+        <ion-select (ionChange)="selectTagpregnant($event)" interface="popover">
+          <ion-select-option value="1">Yes</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Age</ion-label>
+        <ion-input type="number" [(ngModel)]="form.age" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Experienced strokes</ion-label>
+        <ion-select (ionChange)="selectTagStrokes($event)" interface="popover">
+          <ion-select-option value="1">Yes</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Current hypertension condition</ion-label>
+        <ion-select (ionChange)="selectTagHypertesnion($event)" interface="popover">
+          <ion-select-option value="1">Yes</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>      
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Current diabetic condition</ion-label>
+        <ion-select (ionChange)="selectTagDiabetes($event)" interface="popover">
+          <ion-select-option value="1">Yes</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>      
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Currently using BP medication</ion-label>
+        <ion-select (ionChange)="selectTagBPmeds($event)" interface="popover">
+          <ion-select-option value="1">Yes</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>       </ion-item>
+      <ion-item>
+        <ion-label position="floating">Cholesterol level</ion-label>
+        <ion-input type="number" [(ngModel)]="form.totChol" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Systolic Blood Pressure</ion-label>
+        <ion-input type="number" [(ngModel)]="form.sysBp" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Diabolic Blood Pressure</ion-label>
+        <ion-input type="number" [(ngModel)]="form.diaBp" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Cigarrette intake per day</ion-label>
+        <ion-input type="number" [(ngModel)]="form.cigs" required></ion-input>
+      </ion-item>
+
+      <ion-button class="ion-padding" color="primary" expand="full" (click)="calculatePredictions()">
+        Enter Details
+      </ion-button>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
