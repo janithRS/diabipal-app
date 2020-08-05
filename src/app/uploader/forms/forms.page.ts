@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from 'rxjs';
+import { Observable } from "rxjs";
+import { Forms } from "../../../models/forms.model";
+import { UsersService } from "../../users.service";
+import { async } from "@angular/core/testing";
 
 @Component({
   selector: "app-forms",
@@ -8,140 +11,151 @@ import { Observable } from 'rxjs';
   styleUrls: ["./forms.page.scss"],
 })
 export class FormsPage implements OnInit {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private users: UsersService) {}
 
-  hidden: boolean = true
-  cardioPredictionURL: string
-  diabetesPredictionURL: string
-  
+  ngOnInit() {}
 
-  //diabetes data
-  bmi: string = "";
-  sex: string = "";
-  glu: string = "";
-  age: string = "";
-  bp: string = "";
-  skin: string = "";
-  ped: string = "";
-  ins: string = "";
-  preg: string = "";
+  form = {} as Forms;
 
-  //cardio-vascular data
-  hypertension: string = "";
-  totChol: string = "";
-  cigs: string = "";
-  stroke: string = "";
-  bpmeds: string = "";
-  diaBp: string = "";
-  sysBp: string = "";
-  diabetes: string = "";
+  hidden: boolean = true;
+  cardioPredictionURL: string;
+  diabetesPredictionURL: string;
 
   selectTagSex(e) {
-    this.sex = e.detail.value;
+    this.form.sex = e.detail.value;
   }
 
   selectTagpregnant(e) {
-    this.preg = e.detail.value;
+    this.form.preg = e.detail.value;
   }
 
   selectTagStrokes(e) {
-    this.stroke = e.detail.value;
+    this.form.stroke = e.detail.value;
   }
 
   selectTagHypertesnion(e) {
-    this.hypertension = e.detail.value;
+    this.form.hypertension = e.detail.value;
   }
 
   selectTagDiabetes(e) {
-    this.diabetes = e.detail.value;
+    this.form.diabetes = e.detail.value;
   }
 
   selectTagBPmeds(e) {
-    this.bpmeds = e.detail.value;
-    console.log(this.bpmeds);
+    this.form.bpmeds = e.detail.value;
   }
 
-  setheaders(): any{
-    return {
-      headers : new HttpHeaders()
-        .append("Content-Type", "application/json")
-        .append("Access-Control-Allow-Headers", "Content-Type")
-        .append("Access-Control-Allow-Origin", "*")
-    }
-  }
+  // setheaders(): any {
+  //   return {
+  //     headers: new HttpHeaders()
+  //       .append("Content-Type", "application/json")
+  //       .append("Access-Control-Allow-Headers", "Content-Type")
+  //       .append("Access-Control-Allow-Origin", "*"),
+  //   };
+  // }
 
-  cardioPrediction() { 
+  async calculatePredictions() {
+    try {
+      this.cardioPredictionURL = "https://dry-lake-13859.herokuapp.com/predict";
 
-    // let headers: HttpHeaders = new HttpHeaders()
-    //     .append("Content-Type", "application/json")
-    //     .append("Access-Control-Allow-Headers", "Content-Type")
-    //     .append("Access-Control-Allow-Origin", "*")
+      this.diabetesPredictionURL = "https://diabipal.herokuapp.com/predict";
 
-    this.cardioPredictionURL = "https://dry-lake-13859.herokuapp.com/predict"
+      let diabetesData = {
+        bmi: this.form.bmi,
+        glu: this.form.glu,
+        bp: this.form.bp,
+        age: this.form.age,
+        preg: this.form.preg,
+        ins: this.form.ins,
+        ped: this.form.ped,
+        skin: this.form.skin,
+      };
 
-    let postData = {
-      bmi: this.bmi,
-      diabetes: this.diabetes,
-      diaBp: this.diaBp,
-      sysBp: this.sysBp,
-      glu: this.glu,
-      totChol: this.totChol,
-      bpmeds: this.bpmeds,
-      stroke: this.stroke,
-      hypertension: this.hypertension,
-      cigs: this.cigs,
-      age: this.age,
-      sex: this.sex,
-    };
-
-    // let formData: FormData = new FormData()
-    // formData.append('bmi',this.bmi)
-    // formData.append('diabetes',this.diabetes)
-    // formData.append('diaBp',this.diaBp)
-    // formData.append('sysBp',this.sysBp)
-    // formData.append('glu',this.glu)
-    // formData.append('totChol',this.totChol)
-    // formData.append('bpmeds',this.bpmeds)
-    // formData.append('stroke',this.stroke)
-    // formData.append('hypertension',this.hypertension)
-    // formData.append('cigs',this.cigs)
-    // formData.append('age',this.age)
-    // formData.append('sex',this.sex)
-
-    this.http
-      .post(this.cardioPredictionURL, postData)
-      .subscribe((data) => {
+      this.http.post(this.diabetesPredictionURL, diabetesData).subscribe((data) => {
         console.log(data);
+        let diabeticStatus: number
+        if(data['dm_prediction'] == "Negative"){
+          diabeticStatus = 0;
+        }else{
+          diabeticStatus = 1
+        }
+        let postData = {
+          bmi: this.form.bmi,
+          diaBp: this.form.diaBp,
+          sysBp: this.form.sysBp,
+          glu: this.form.glu,
+          totChol: this.form.totChol,
+          bpmeds: this.form.bpmeds,
+          stroke: this.form.stroke,
+          hypertension: this.form.hypertension,
+          cigs: this.form.cigs,
+          age: this.form.age,
+          sex: this.form.sex,
+          diabetes: diabeticStatus
+        };
+        this.http
+        .post(this.cardioPredictionURL, postData)
+        .subscribe((data) => {
+          console.log(data);
+        });
       });
+
+    } catch (e) {}
   }
 
+  
 
-  diabetesPrediction() {
+  // cardioPrediction(url, cdata) {
+  //   this.http.post(url, cdata).subscribe((data) => {
+  //     console.log(data);
+  //   });
+  // }
 
-    // let headers: HttpHeaders = new HttpHeaders()
-    //   .append("Content-Type", "application/json")
-    //   .append("Access-Control-Allow-Headers", "Content-Type")
-    //   .append("Access-Control-Allow-Origin", "*");
+  // cardioPrediction() {
+  //   this.cardioPredictionURL = "https://dry-lake-13859.herokuapp.com/predict";
 
-      let headers = this.setheaders()
+  //   let postData = {
+  //     bmi: this.form.bmi,
+  //     diabetes: this.form.diabetes,
+  //     diaBp: this.form.diaBp,
+  //     sysBp: this.form.sysBp,
+  //     glu: this.form.glu,
+  //     totChol: this.form.totChol,
+  //     bpmeds: this.form.bpmeds,
+  //     stroke: this.form.stroke,
+  //     hypertension: this.form.hypertension,
+  //     cigs: this.form.cigs,
+  //     age: this.form.age,
+  //     sex: this.form.sex,
+  //   };
 
-    this.diabetesPredictionURL = "https://diabipal.herokuapp.com/predict";
+  //   this.http.post(this.cardioPredictionURL, postData).subscribe((data) => {
+  //     console.log(data);
+  //   });
+  // }
 
-    let diabetesData = {
-      bmi: this.bmi,
-      glu: this.glu,
-      bpmeds: this.bpmeds,
-      age: this.age,
-      sex: this.sex,
-      preg: this.preg,
-      ins: this.ins,
-      ped: this.ped,
-    };
-    console.log(diabetesData);
-    this.http.post(this.diabetesPredictionURL, diabetesData, { headers }).subscribe((data) => {
-      console.log(data);
-    });
-  }
+  // diabetesPrediction() {
 
-  ngOnInit() { }
+  //   this.diabetesPredictionURL = "https://diabipal.herokuapp.com/predict";
+
+  //   let diabetesData = {
+  //     bmi: this.form.bmi,
+  //     glu: this.form.glu,
+  //     bp: this.form.bp,
+  //     age: this.form.age,
+  //     preg: this.form.preg,
+  //     ins: this.form.ins,
+  //     ped: this.form.ped,
+  //     skin: this.form.skin,
+  //   };
+
+    // this.http
+        // .post(this.diabetesPredictionURL, diabetesData)
+        // .subscribe((data) => {
+        //   console.log(data);
+        // });
+ 
+  // }
+
+
 }

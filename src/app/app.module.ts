@@ -12,7 +12,6 @@ import firebaseConfig from "./firebase";
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from "@angular/fire/auth";
 import {HttpClientModule} from "@angular/common/http";
-import {UserService} from "./user.service";
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 
@@ -36,7 +35,6 @@ import {environment} from '../environments/environment';
         StatusBar,
         SplashScreen,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
-        UserService
     ],
     bootstrap: [AppComponent]
 })
