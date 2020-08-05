@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AngularFirestore} from "@angular/fire/firestore";
-import {UserService} from "../user.service";
+import {UsersService} from "../users.service";
 
 @Component({
   selector: 'app-feed',
@@ -10,7 +10,7 @@ import {UserService} from "../user.service";
 export class FeedPage implements OnInit {
   private userPosts;
 
-  constructor(private afs: AngularFirestore, private user: UserService) {
+  constructor(private afs: AngularFirestore, private user: UsersService) {
     const posts = afs.doc(`users/${user.getUID()}`)
     this.userPosts = posts.valueChanges();
   }
