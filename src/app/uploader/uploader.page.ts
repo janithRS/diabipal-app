@@ -8,6 +8,7 @@ import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import { AngularFireStorage } from '@angular/fire/storage';
 // import { async } from '@angular/core/testing';
 import * as firebase from 'firebase';
+import { AngularFirestore } from '@angular/fire/firestore';
 // import { url } from 'inspector';
 
 const MEDIA_FOLDER_NAME = 'my_media';
@@ -23,6 +24,8 @@ export class UploaderPage implements OnInit {
     // androidPermissions: any;
     uploadProgress = 0;
     cloudFiles = [];
+    dbUrl: "";
+    // imageId: "";
 
     constructor(
         private imagePicker: ImagePicker,
@@ -32,7 +35,8 @@ export class UploaderPage implements OnInit {
         private actionSheetController: ActionSheetController,
         private plt: Platform,
         private storage: AngularFireStorage,
-        private toast: ToastController
+        private toast: ToastController,
+        private fireStore: AngularFirestore
     ) { }
 
     // list the content of the folder
@@ -167,8 +171,11 @@ export class UploaderPage implements OnInit {
         .toString(36)
         .substring(2,8);
 
+        const imageId = new Date().getTime() + randomID;
+
         //  save images inside files folder
-        const uploadTask = this.storage.upload(`files/${new Date().getTime()}_${randomID}`, fileBlob);
+        const uploadTask = this.storage.upload(`files/${imageId}`, fileBlob);
+        // console.log("ID",imageId)
         
         uploadTask.percentageChanges().subscribe(changes => {
             0 - 100
@@ -176,15 +183,30 @@ export class UploaderPage implements OnInit {
         })
 
         uploadTask.then(async res => {
-            this.loadFilesFromCloud();
+            // this.loadFilesFromCloud();
             const toast = await this.toast.create({
                 duration: 2000,
                 message: 'Filed uploaded!'
             });
             toast.present();
+
+            // get url after file is uploaded
+            const storageRef = firebase.storage().ref(`files/` + imageId)
+            storageRef.getDownloadURL().then(async res => {
+                this.dbUrl = res
+                console.log("inside upload function", this.dbUrl)
+                // return this.dbUrl;
+            });
         })
 
+        // save uid and urlin db
+        // this.fireStore.doc(`songList/${uid}`).set({
+        //     uid: userId,
+        //     url: this.dbUrl
+        // });
+        
     }
+
 
     getMimeType(fileExt){
         if( fileExt == 'jpg') return { type: 'image/jpg'};
@@ -192,20 +214,40 @@ export class UploaderPage implements OnInit {
     }
 
     // load files from cloud database
-    loadFilesFromCloud(){
-        this.cloudFiles = [];
+    // loadFilesFromCloud(){
+    //     this.cloudFiles = [];
 
-        const storageRef = firebase.storage().ref('files');
-        storageRef.listAll().then(result => {
-            result.items.forEach(async ref => {
-                this.cloudFiles.push({
-                    name: ref.name,
-                    url: await ref.getDownloadURL(),
-                    full: ref.fullPath
-                });
-                console.log('URL+++++',ref.getDownloadURL())
-            });
-        });
-    }
+    //     const storageRef = firebase.storage().ref('files');
+    //     storageRef.listAll().then(result => {
+    //         result.items.forEach(async ref => {
+    //             this.cloudFiles.push({
+    //                 name: ref.name,
+    //                 url: await ref.getDownloadURL(),
+    //                 full: ref.fullPath
+    //             });
+
+    //             ref.getDownloadURL().then(async res => {
+    //                 this.dbUrl = res
+    //                 // console.log(res)
+    //                 // return this.dbUrl;
+    //             });
+
+    //             // return this.dbUrl;
+    //         });
+    //     });
+    //     // console.log("@@@@@@@@@@@2",this.dbUrl)
+    //     return this.dbUrl;
+    // }
+
+    // loadFilesFromCloud(){
+    //     const storageRef = firebase.storage().ref('/files/'+this.randomID)
+    //         storageRef.getDownloadURL().then(async res => {
+    //             this.dbUrl = res
+    //             console.log("inside upload function",this.dbUrl)
+    //             // return this.dbUrl;
+    //     });
+    // }
+
+    
 
 }
