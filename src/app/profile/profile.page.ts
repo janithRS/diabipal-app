@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AngularFirestore} from "@angular/fire/firestore";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -9,11 +10,14 @@ import {AngularFirestore} from "@angular/fire/firestore";
 export class ProfilePage implements OnInit {
 
   // name: string =
-  constructor() {
+  constructor(public router: Router) {
 
   }
 
   ngOnInit() {
   }
 
+    redirectToChat() {
+      this.router.navigate(['/connect-doctor'])
+    }
 }

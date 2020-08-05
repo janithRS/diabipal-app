@@ -37,6 +37,7 @@ export class ConnectDoctorPage implements OnInit {
   ngOnInit() {
 
     this.sendgetRequest();
+    
   //  console.log(tempArray[1]);
 
   //this.scrollToBottomOnInit();
