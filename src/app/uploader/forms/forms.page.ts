@@ -13,7 +13,6 @@ export class FormsPage implements OnInit {
   hidden: boolean = true
   cardioPredictionURL: string
   diabetesPredictionURL: string
-  optionValues: Array<Object> = [1,0]
   
 
   //diabetes data
@@ -73,13 +72,12 @@ export class FormsPage implements OnInit {
 
   cardioPrediction() { 
 
-    // let headers = this.setheaders()
-    let headers: HttpHeaders = new HttpHeaders()
-        .append("Content-Type", "application/json")
-        .append("Access-Control-Allow-Headers", "Content-Type")
-        .append("Access-Control-Allow-Origin", "*")
+    // let headers: HttpHeaders = new HttpHeaders()
+    //     .append("Content-Type", "application/json")
+    //     .append("Access-Control-Allow-Headers", "Content-Type")
+    //     .append("Access-Control-Allow-Origin", "*")
 
-    this.cardioPredictionURL = "http://127.0.0.1:5000/predict";
+    this.cardioPredictionURL = "https://dry-lake-13859.herokuapp.com/predict"
 
     let postData = {
       bmi: this.bmi,
@@ -95,9 +93,23 @@ export class FormsPage implements OnInit {
       age: this.age,
       sex: this.sex,
     };
-    console.log(postData);
+
+    // let formData: FormData = new FormData()
+    // formData.append('bmi',this.bmi)
+    // formData.append('diabetes',this.diabetes)
+    // formData.append('diaBp',this.diaBp)
+    // formData.append('sysBp',this.sysBp)
+    // formData.append('glu',this.glu)
+    // formData.append('totChol',this.totChol)
+    // formData.append('bpmeds',this.bpmeds)
+    // formData.append('stroke',this.stroke)
+    // formData.append('hypertension',this.hypertension)
+    // formData.append('cigs',this.cigs)
+    // formData.append('age',this.age)
+    // formData.append('sex',this.sex)
+
     this.http
-      .post(this.cardioPredictionURL, JSON.stringify(postData), {headers})
+      .post(this.cardioPredictionURL, postData)
       .subscribe((data) => {
         console.log(data);
       });
