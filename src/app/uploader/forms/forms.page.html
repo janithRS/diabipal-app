@@ -17,27 +17,27 @@
       </ion-item>
       <ion-item>
         <ion-label position="floating">BMI</ion-label>
-        <ion-input type="number" [(ngModel)]="bmi" value="{{bmi}}" required></ion-input>
+        <ion-input type="number" [(ngModel)]="form.bmi"required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Glucose</ion-label>
-        <ion-input type="number" [(ngModel)]="glu" required></ion-input>
+        <ion-input type="number" [(ngModel)]="form.glu" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Blood Pressure</ion-label>
-        <ion-input type="number" [(ngModel)]="bp" required></ion-input>
+        <ion-input type="number" [(ngModel)]="form.bp" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Skin Thickness</ion-label>
-        <ion-input type="number" [(ngModel)]="skin" required></ion-input>
+        <ion-input type="number" [(ngModel)]="form.skin" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Insulin</ion-label>
-        <ion-input type="number" [(ngModel)]="ins" required></ion-input>
+        <ion-input type="number" [(ngModel)]="form.ins" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">PED</ion-label>
-        <ion-input type="number" [(ngModel)]="ped" required></ion-input>
+        <ion-input type="number" [(ngModel)]="form.ped" required></ion-input>
       </ion-item>
       <ion-item *ngIf="hidden">
         <ion-label position="floating">Currently pregnant</ion-label>
@@ -48,7 +48,7 @@
       </ion-item>
       <ion-item>
         <ion-label position="floating">Age</ion-label>
-        <ion-input type="number" [(ngModel)]="age" required></ion-input>
+        <ion-input type="number" [(ngModel)]="form.age" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Experienced strokes</ion-label>
@@ -79,22 +79,22 @@
         </ion-select>       </ion-item>
       <ion-item>
         <ion-label position="floating">Cholesterol level</ion-label>
-        <ion-input type="number" [(ngModel)]="totChol" required></ion-input>
+        <ion-input type="number" [(ngModel)]="form.totChol" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Systolic Blood Pressure</ion-label>
-        <ion-input type="number" [(ngModel)]="sysBp" required></ion-input>
+        <ion-input type="number" [(ngModel)]="form.sysBp" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Diabolic Blood Pressure</ion-label>
-        <ion-input type="number" [(ngModel)]="diaBp" required></ion-input>
+        <ion-input type="number" [(ngModel)]="form.diaBp" required></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Cigarrette intake per day</ion-label>
-        <ion-input type="number" [(ngModel)]="cigs" required></ion-input>
+        <ion-input type="number" [(ngModel)]="form.cigs" required></ion-input>
       </ion-item>
 
-      <ion-button class="ion-padding" color="primary" expand="full" (click)="cardioPrediction()">
+      <ion-button class="ion-padding" color="primary" expand="full" (click)="calculatePredictions()">
         Enter Details
       </ion-button>
     </ion-item-sliding>
