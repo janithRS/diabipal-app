@@ -1,5 +1,6 @@
 export interface Forms{
-    bmi: string 
+    height: number
+    weight: number 
     sex: string 
     glu: string 
     age: string 
