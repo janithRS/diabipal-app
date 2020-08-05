@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)
+  },  {
+    path: 'connect-doctor',
+    loadChildren: () => import('./connect-doctor/connect-doctor.module').then( m => m.ConnectDoctorPageModule)
   }
+
 ];
 
 @NgModule({
