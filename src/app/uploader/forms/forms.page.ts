@@ -61,7 +61,7 @@ export class FormsPage implements OnInit {
       this.diabetesPredictionURL = "https://diabipal.herokuapp.com/predict";
 
       let diabetesData = {
-        bmi: this.form.bmi,
+        bmi: (this.form.weight/(this.form.height*this.form.height)),
         glu: this.form.glu,
         bp: this.form.bp,
         age: this.form.age,
@@ -70,6 +70,8 @@ export class FormsPage implements OnInit {
         ped: this.form.ped,
         skin: this.form.skin,
       };
+
+      console.log(diabetesData)
 
       this.http.post(this.diabetesPredictionURL, diabetesData).subscribe((data) => {
         console.log(data);
@@ -80,7 +82,7 @@ export class FormsPage implements OnInit {
           diabeticStatus = 1
         }
         let postData = {
-          bmi: this.form.bmi,
+          bmi: (this.form.weight/(this.form.weight*this.form.weight)),
           diaBp: this.form.diaBp,
           sysBp: this.form.sysBp,
           glu: this.form.glu,
