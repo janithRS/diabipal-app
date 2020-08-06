@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
+import { auth, User } from 'firebase/app';
 import {Router} from "@angular/router";
 import {AlertController} from "@ionic/angular";
-import {UserService} from "../user.service";
+import {UsersService} from "../users.service";
 
 @Component({
   selector: 'app-login',
