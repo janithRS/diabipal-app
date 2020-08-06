@@ -17,7 +17,6 @@ export class RegisterPage implements OnInit {
     username: string = "";
     password: string = "";
     cpassword: string = "";
-    
 
     constructor(
         public auth: AngularFireAuth, 
@@ -39,7 +38,7 @@ export class RegisterPage implements OnInit {
         try {
             const res = await this.auth.createUserWithEmailAndPassword(username, password)
 
-            this.afstore.doc(`users/${res.user.uid}`).set({
+            await this.afstore.doc(`users/${res.user.uid}`).set({
                 username
             })
 

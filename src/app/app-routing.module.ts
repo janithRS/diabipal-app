@@ -24,12 +24,12 @@ const routes: Routes = [
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule),
     canActivate:[AuthService]
-  },  {
+  },
+  {
     path: 'results',
     loadChildren: () => import('./results/results.module').then( m => m.ResultsPageModule)
   }
-
-];
+]
 
 @NgModule({
   imports: [
