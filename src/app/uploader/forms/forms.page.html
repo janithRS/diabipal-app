@@ -16,11 +16,11 @@
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Height</ion-label>
+        <ion-label position="floating">Height (kg)</ion-label>
         <ion-input type="number" [(ngModel)]="form.height"required></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Weight</ion-label>
+        <ion-label position="floating">Weight (cm)</ion-label>
         <ion-input type="number" [(ngModel)]="form.weight"required></ion-input>
       </ion-item>
       <ion-item>
@@ -64,13 +64,6 @@
       <ion-item>
         <ion-label position="floating">Current hypertension condition</ion-label>
         <ion-select (ionChange)="selectTagHypertesnion($event)" interface="popover">
-          <ion-select-option value="1">Yes</ion-select-option>
-          <ion-select-option value="0">No</ion-select-option>
-        </ion-select>      
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Current diabetic condition</ion-label>
-        <ion-select (ionChange)="selectTagDiabetes($event)" interface="popover">
           <ion-select-option value="1">Yes</ion-select-option>
           <ion-select-option value="0">No</ion-select-option>
         </ion-select>      
