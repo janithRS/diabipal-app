@@ -16,15 +16,15 @@ export class LoginPage implements OnInit {
   password: string = "";
   checkUser: string
 
-
-  constructor(
-    public auth: AngularFireAuth, 
-    public alert: AlertController,
-    public router: Router, 
-    private user: UsersService
-    ) {
-      
-    }
+  constructor(public auth: AngularFireAuth, public alert: AlertController,public router: Router, public user: UsersService) {
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
+        router.navigate(['/tabs/tabs/feed'])
+      }
+    }).then(r  => {
+      console.log('Redirected to feed')
+    })
+  }
 
   ngOnInit() {
     this.auth.onAuthStateChanged(function(u) {
