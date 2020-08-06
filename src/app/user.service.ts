@@ -1,4 +1,6 @@
 import {Injectable} from "@angular/core";
+import { AngularFireAuth } from '@angular/fire/auth';
+import { auth } from 'firebase/app';
 
 interface user {
     username: string,
@@ -10,7 +12,7 @@ interface user {
 export class UserService {
     private user: user
 
-    constructor() {
+    constructor(private afAuth: AngularFireAuth) {
     }
 
     setUser(user: user){
@@ -18,6 +20,19 @@ export class UserService {
     }
 
     getUID(){
-        return this.user.uid;
+        if(!this.user){
+            if(this.afAuth.currentUser){
+                const user = this.afAuth.currentUser
+                this.setUser({
+                    username : user['email'],
+                    uid: user['uid']
+                })
+                return user['uid']
+            }else {
+                throw new Error("User not logged in")
+            }
+        }else{
+            return this.user.uid
+        }
     }
 }
