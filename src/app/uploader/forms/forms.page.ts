@@ -4,6 +4,10 @@ import { Observable } from "rxjs";
 import { Forms } from "../../../models/forms.model";
 import { UsersService } from "../../users.service";
 import { async } from "@angular/core/testing";
+import { AngularFirestore } from "@angular/fire/firestore";
+import { AngularFireAuth } from "@angular/fire/auth";
+import { PredictionResults } from "../../../models/preditctionresults.model";
+import { firestore } from "firebase/app";
 
 @Component({
   selector: "app-forms",
@@ -11,11 +15,19 @@ import { async } from "@angular/core/testing";
   styleUrls: ["./forms.page.scss"],
 })
 export class FormsPage implements OnInit {
-  constructor(private http: HttpClient, private users: UsersService) {}
+  constructor(
+    private http: HttpClient,
+    private users: UsersService,
+    private aftStore: AngularFirestore,
+    private afAuth: AngularFireAuth
+  ) {}
+
+  userID: string;
 
   ngOnInit() {}
 
   form = {} as Forms;
+  predictionResults = {} as PredictionResults;
 
   hidden: boolean = true;
   cardioPredictionURL: string;
@@ -60,8 +72,10 @@ export class FormsPage implements OnInit {
 
       this.diabetesPredictionURL = "https://diabipal.herokuapp.com/predict";
 
-      let diabetesData = {
-        bmi: (this.form.weight/(this.form.height*this.form.height)),
+      const diabetesData = {
+        bmi:
+          this.form.weight /
+          ((this.form.height / 100) * (this.form.height / 100)),
         glu: this.form.glu,
         bp: this.form.bp,
         age: this.form.age,
@@ -70,94 +84,80 @@ export class FormsPage implements OnInit {
         ped: this.form.ped,
         skin: this.form.skin,
       };
-
-      console.log(diabetesData)
-
-      this.http.post(this.diabetesPredictionURL, diabetesData).subscribe((data) => {
-        console.log(data);
-        let diabeticStatus: number
-        if(data['dm_prediction'] == "Negative"){
-          diabeticStatus = 0;
-        }else{
-          diabeticStatus = 1
-        }
-        let postData = {
-          bmi: (this.form.weight/(this.form.weight*this.form.weight)),
-          diaBp: this.form.diaBp,
-          sysBp: this.form.sysBp,
-          glu: this.form.glu,
-          totChol: this.form.totChol,
-          bpmeds: this.form.bpmeds,
-          stroke: this.form.stroke,
-          hypertension: this.form.hypertension,
-          cigs: this.form.cigs,
-          age: this.form.age,
-          sex: this.form.sex,
-          diabetes: diabeticStatus
-        };
-        this.http
-        .post(this.cardioPredictionURL, postData)
+      this.http
+        .post(this.diabetesPredictionURL, diabetesData)
         .subscribe((data) => {
           console.log(data);
-        });
-      });
 
+          this.predictionResults.diabetic_positive = data["ob_stage"];
+          this.predictionResults.diabetic_negative = data["ob_therapy"];
+
+          let diabeticStatus: number;
+          if (data["dm_prediction"] == "Negative") {
+            diabeticStatus = 0;
+          } else {
+            diabeticStatus = 1;
+          }
+
+          var postData = {
+            height: this.form.height,
+            weight: this.form.weight,
+            diaBp: this.form.diaBp,
+            sysBp: this.form.sysBp,
+            glu: this.form.glu,
+            totChol: this.form.totChol,
+            bpmeds: this.form.bpmeds,
+            stroke: this.form.stroke,
+            hypertension: this.form.hypertension,
+            cigs: this.form.cigs,
+            age: this.form.age,
+            sex: this.form.sex,
+            diabetes: diabeticStatus,
+          };
+
+          this.http
+            .post(this.cardioPredictionURL, postData)
+            .subscribe((data) => {
+              console.log(data);
+
+              this.predictionResults.cardio_positive =
+                data["positive prediction"];
+              this.predictionResults.cardio_negative =
+                data["negative prediction"];
+
+              const cardiopositve = this.predictionResults.cardio_positive;
+              const cardionegative = this.predictionResults.cardio_negative;
+              const diabetespositive = this.predictionResults.diabetic_positive;
+              const diabetesnegative = this.predictionResults.diabetic_negative;
+              const height = this.form.height;
+              const weight = this.form.weight;
+              const glucose = this.form.glu;
+              const blood_pressure = this.form.bp;
+              const strokes = this.form.stroke;
+              const hypertension = this.form.hypertension;
+              const cigs = this.form.cigs;
+              const diastolic_blood_pressure = this.form.diaBp;
+              const systolic_blood_pressure = this.form.sysBp;
+
+              this.aftStore.doc(`users/${this.users.getUID()}`).update({
+                data: firestore.FieldValue.arrayUnion({
+                  cardionegative,
+                  cardiopositve,
+                  diabetespositive,
+                  diabetesnegative,
+                  height,
+                  weight,
+                  glucose,
+                  blood_pressure,
+                  strokes,
+                  hypertension,
+                  cigs,
+                  diastolic_blood_pressure,
+                  systolic_blood_pressure,
+                }),
+              });
+            });
+        });
     } catch (e) {}
   }
-
-  
-
-  // cardioPrediction(url, cdata) {
-  //   this.http.post(url, cdata).subscribe((data) => {
-  //     console.log(data);
-  //   });
-  // }
-
-  // cardioPrediction() {
-  //   this.cardioPredictionURL = "https://dry-lake-13859.herokuapp.com/predict";
-
-  //   let postData = {
-  //     bmi: this.form.bmi,
-  //     diabetes: this.form.diabetes,
-  //     diaBp: this.form.diaBp,
-  //     sysBp: this.form.sysBp,
-  //     glu: this.form.glu,
-  //     totChol: this.form.totChol,
-  //     bpmeds: this.form.bpmeds,
-  //     stroke: this.form.stroke,
-  //     hypertension: this.form.hypertension,
-  //     cigs: this.form.cigs,
-  //     age: this.form.age,
-  //     sex: this.form.sex,
-  //   };
-
-  //   this.http.post(this.cardioPredictionURL, postData).subscribe((data) => {
-  //     console.log(data);
-  //   });
-  // }
-
-  // diabetesPrediction() {
-
-  //   this.diabetesPredictionURL = "https://diabipal.herokuapp.com/predict";
-
-  //   let diabetesData = {
-  //     bmi: this.form.bmi,
-  //     glu: this.form.glu,
-  //     bp: this.form.bp,
-  //     age: this.form.age,
-  //     preg: this.form.preg,
-  //     ins: this.form.ins,
-  //     ped: this.form.ped,
-  //     skin: this.form.skin,
-  //   };
-
-    // this.http
-        // .post(this.diabetesPredictionURL, diabetesData)
-        // .subscribe((data) => {
-        //   console.log(data);
-        // });
- 
-  // }
-
-
 }

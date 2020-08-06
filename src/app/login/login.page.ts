@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {AlertController} from "@ionic/angular";
 import {UsersService} from "../users.service";
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -13,6 +14,7 @@ import {UsersService} from "../users.service";
 export class LoginPage implements OnInit {
   username: string = "";
   password: string = "";
+  checkUser: string
 
 
   constructor(
@@ -20,10 +22,15 @@ export class LoginPage implements OnInit {
     public alert: AlertController,
     public router: Router, 
     private user: UsersService
-
-    ) { }
+    ) {
+      
+    }
 
   ngOnInit() {
+    this.auth.onAuthStateChanged(function(u) {
+      
+    });
+
   }
 
   async login(){
