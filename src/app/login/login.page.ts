@@ -14,7 +14,7 @@ export class LoginPage implements OnInit {
   username: string = "";
   password: string = "";
 
-  constructor(public auth: AngularFireAuth, public alert: AlertController,public router: Router, public user: UserService) {
+  constructor(public auth: AngularFireAuth, public alert: AlertController,public router: Router, public user: UsersService) {
     auth.onAuthStateChanged(function (user) {
       if (user) {
         router.navigate(['/tabs/tabs/feed'])

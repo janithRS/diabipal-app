@@ -13,6 +13,7 @@ export class FeedPage implements OnInit {
   constructor(private afs: AngularFirestore, private user: UsersService) {
     const posts = afs.doc(`users/${user.getUID()}`)
     this.userPosts = posts.valueChanges();
+    console.log(user.getUID())
   }
 
   ngOnInit() {
