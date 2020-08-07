@@ -8,6 +8,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { PredictionResults } from "../../../models/preditctionresults.model";
 import { firestore } from "firebase/app";
+import {ActivatedRoute} from '@angular/router'
 import { Router } from '@angular/router';
 import { ToastController, LoadingController } from '@ionic/angular'
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
@@ -36,12 +37,21 @@ export class FormsPage implements OnInit {
     private afAuth: AngularFireAuth,
     private router: Router,
     private toastCtrl: ToastController,
-    private loadCtrl: LoadingController
-  ) { }
+    private loadCtrl: LoadingController,
+    private activateROute: ActivatedRoute,
+
+  ) {}
 
   userID: string;
+  queryParams: any
 
   ngOnInit() {
+    this.activateROute.queryParams.subscribe((res) => {
+      this.queryParams = JSON.parse(res.value)
+      console.log(this.queryParams.RESULT)
+      this.form.glu = this.queryParams.RESULT
+
+    })
   }
 
 
@@ -159,6 +169,8 @@ export class FormsPage implements OnInit {
         sex: this.form.sex,
         diabetes: diabeticStatus,
       };
+
+      console.log(diabetesData)
 
       this.http
         .post(this.cardioPredictionURL, postData)
