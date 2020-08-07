@@ -15,6 +15,10 @@ import {HttpClientModule} from "@angular/common/http";
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import { File } from '@ionic-native/File/ngx';
+import { MediaCapture } from '@ionic-native/media-capture/ngx';
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
 import {environment} from '../environments/environment';
 import {UsersService} from "./users.service";
@@ -39,6 +43,10 @@ import {AuthService} from "./auth.service";
         UsersService,
         AuthService,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+        ImagePicker,
+        MediaCapture,
+        File,
+        PhotoViewer
     ],
     bootstrap: [AppComponent]
 })
