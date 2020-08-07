@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
+import { auth, User } from 'firebase/app';
 import {Router} from "@angular/router";
 import {AlertController} from "@ionic/angular";
-import {UserService} from "../user.service";
+import {UsersService} from "../users.service";
+
 
 @Component({
   selector: 'app-login',
@@ -13,8 +14,17 @@ import {UserService} from "../user.service";
 export class LoginPage implements OnInit {
   username: string = "";
   password: string = "";
+  checkUser: string
 
-  constructor(public auth: AngularFireAuth, public alert: AlertController,public router: Router, public user: UserService) { }
+  constructor(public auth: AngularFireAuth, public alert: AlertController,public router: Router, public user: UsersService) {
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
+        router.navigate(['/tabs/tabs/feed'])
+      }
+    }).then(r  => {
+      console.log('Redirected to feed')
+    })
+  }
 
   ngOnInit() {
   }

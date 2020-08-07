@@ -1,18 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { UploaderPageRoutingModule } from './uploader-routing.module';
-import { UploaderPage } from './uploader.page';
 
+import { IonicModule } from '@ionic/angular';
+
+import { FormsPageRoutingModule } from './forms-routing.module';
+
+import { FormsPage } from './forms.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    UploaderPageRoutingModule
+    FormsPageRoutingModule
   ],
-  declarations: [UploaderPage]
+  declarations: [FormsPage]
 })
-export class UploaderPageModule {}
+export class FormsPageModule {}

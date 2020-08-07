@@ -12,7 +12,6 @@ import firebaseConfig from "./firebase";
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from "@angular/fire/auth";
 import {HttpClientModule} from "@angular/common/http";
-import {UserService} from "./user.service";
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 
@@ -22,6 +21,8 @@ import { MediaCapture } from '@ionic-native/media-capture/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
 import {environment} from '../environments/environment';
+import {UsersService} from "./users.service";
+import {AuthService} from "./auth.service";
 
 @NgModule({
     declarations: [AppComponent],
@@ -39,8 +40,9 @@ import {environment} from '../environments/environment';
     providers: [
         StatusBar,
         SplashScreen,
+        UsersService,
+        AuthService,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
-        UserService,
         ImagePicker,
         MediaCapture,
         File,
