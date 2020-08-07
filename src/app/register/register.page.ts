@@ -5,6 +5,8 @@ import {AlertController} from "@ionic/angular";
 import {Router} from "@angular/router";
 import {AngularFirestore} from "@angular/fire/firestore";
 import {UsersService} from "../users.service";
+import {LoaderService} from '../loader-service.service'
+
 
 
 @Component({
@@ -23,13 +25,15 @@ export class RegisterPage implements OnInit {
         public alert: AlertController, 
         public router: Router, 
         public afstore: AngularFirestore, 
-        private user: UsersService
+        private user: UsersService,
+        private loader: LoaderService
         ) {}
 
     ngOnInit() {
     }
 
     async register() {
+        this.loader.presentLoading('Please wait')
         const {username, password, cpassword} = this
         if (password != cpassword) {
             await this.showAlert("Error!", "Password don't match")
@@ -47,7 +51,7 @@ export class RegisterPage implements OnInit {
                 uid: res.user.uid
             })
 
-            await this.showAlert("Success!", "Welcome aboard")
+            // await this.showAlert("Success!", "Welcome aboard")
             await this.router.navigate(['/tabs'])
 
         } catch (e) {
