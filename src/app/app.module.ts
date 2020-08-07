@@ -17,6 +17,8 @@ import {AngularFireStorageModule} from '@angular/fire/storage';
 
 
 import {environment} from '../environments/environment';
+import {UsersService} from "./users.service";
+import {AuthService} from "./auth.service";
 
 @NgModule({
     declarations: [AppComponent],
@@ -34,6 +36,8 @@ import {environment} from '../environments/environment';
     providers: [
         StatusBar,
         SplashScreen,
+        UsersService,
+        AuthService,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     ],
     bootstrap: [AppComponent]

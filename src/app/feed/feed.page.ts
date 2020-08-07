@@ -8,7 +8,7 @@ import {UsersService} from "../users.service";
   styleUrls: ['./feed.page.scss'],
 })
 export class FeedPage implements OnInit {
-  private userPosts;
+  userPosts;
 
   constructor(private afs: AngularFirestore, private user: UsersService) {
     const posts = afs.doc(`users/${user.getUID()}`)
@@ -21,4 +21,5 @@ export class FeedPage implements OnInit {
   redirectToChat() {
 
   }
+
 }

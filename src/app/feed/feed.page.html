@@ -1,14 +1,24 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>History</ion-title>
+    <ion-title>Past Records</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div id="card">
-    <div></div>
-  </div>
-  <ion-fab vertical="center" horizontal="end" edge slot="fixed">
+  <ion-list>
+    <div class="image" *ngFor="let d of (userPosts | async)?.data">
+      <ion-icon></ion-icon>
+      <ion-item>
+        <ion-label>
+          <h2 *ngIf="d.current_date">Date: {{ d.current_date.toDate() | date }}</h2>
+          <p>Diabetic Prediction: {{d.diabetic_prediction}}</p>
+          <p>Cardiovascular Probability: {{d.cardiopositve}}</p>
+        </ion-label>
+      </ion-item>
+    </div>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="redirectToChat()">
       <ion-icon name="chatbubbles-outline"></ion-icon>
     </ion-fab-button>

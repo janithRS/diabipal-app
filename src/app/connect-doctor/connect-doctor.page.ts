@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { ViewChild } from '@angular/core';
 import { IonContent } from '@ionic/angular';
 import {AlertController} from '@ionic/angular';
+import {UsersService} from "../users.service";
+
 
 
 interface DataResponse {
@@ -30,7 +32,7 @@ export class ConnectDoctorPage implements OnInit {
   messages: Observable<Message[]>;
   tempArray: Message[] = [];
 
-  constructor(private http: HttpClient, public alert: AlertController) {
+  constructor(private http: HttpClient, public alert: AlertController, private user: UsersService) {
     
    }
 
@@ -55,7 +57,7 @@ export class ConnectDoctorPage implements OnInit {
   sendgetRequest() {
 
 
-    return this.http.get("http://localhost:8080/chat/all")
+    return this.http.get("http://localhost:8080/chat/getuserchat/"+this.user.getUID())
       .subscribe(data => { 
         console.log(data);
         var count =Object.keys(data).length;
@@ -81,12 +83,13 @@ export class ConnectDoctorPage implements OnInit {
     const {input} = this
 
   //await this.showAlert("Success!", "Welcome aboard")
+  
 
     let postData = {
       "patientId": 1001,
       "chatBy": 1,
       "chatContent": input,
-      "firebaseid": "abc123abc123"
+      "firebaseid": this.user.getUID()
   }
 
    this.http.post("http://localhost:8080/chat/getreply", postData)
