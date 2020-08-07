@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthService } from './auth.service';
+import {AuthService} from "./auth.service";
 
 const routes: Routes = [
   // {
@@ -27,9 +27,20 @@ const routes: Routes = [
   },
   {
     path: 'results',
-    loadChildren: () => import('./results/results.module').then( m => m.ResultsPageModule)
+    loadChildren: () => import('./results/results.module').then( m => m.ResultsPageModule),
+    canActivate:[AuthService]
+  },
+  {
+    path: 'connect-doctor',
+    loadChildren: () => import('./connect-doctor/connect-doctor.module').then( m => m.ConnectDoctorPageModule),
+    canActivate:[AuthService]
+  },
+  {
+    path: 'select-doctor',
+    loadChildren: () => import('./select-doctor/select-doctor.module').then( m => m.SelectDoctorPageModule),
+    canActivate:[AuthService]
   }
-]
+];
 
 @NgModule({
   imports: [

@@ -5,18 +5,6 @@
 </ion-header>
 
 <ion-content>
-<!--  <div id="images">-->
-<!--    <div class="image" *ngFor="let d of (userPosts | async)?.data">-->
-<!--      <ion-card>-->
-<!--        <ion-card-content>-->
-<!--          <p>{{ d.sleep_info }}</p>-->
-<!--        </ion-card-content>-->
-<!--      </ion-card>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <ion-list-header>-->
-<!--    <ion-label>Your Past Records</ion-label>-->
-<!--  </ion-list-header>-->
   <ion-list>
     <div class="image" *ngFor="let d of (userPosts | async)?.data">
       <ion-icon></ion-icon>
@@ -30,7 +18,7 @@
     </div>
   </ion-list>
 
-  <ion-fab vertical="center" horizontal="end" edge slot="">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="redirectToChat()">
       <ion-icon name="chatbubbles-outline"></ion-icon>
     </ion-fab-button>
