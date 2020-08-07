@@ -6,6 +6,7 @@ import { ViewChild } from '@angular/core';
 import { IonContent } from '@ionic/angular';
 import {AlertController} from '@ionic/angular';
 
+
 interface DataResponse {
   id: number;
   patientId: number;
@@ -23,41 +24,22 @@ export class ConnectDoctorPage implements OnInit {
 
   input: string = "";
 
-  //@ViewChild('content') private content: any;
   @ViewChild(IonContent) content: IonContent;
 
   title = 'Tour of Heroes';
   messages: Observable<Message[]>;
   tempArray: Message[] = [];
 
-  constructor(private http: HttpClient, public alert: AlertController) { }
+  constructor(private http: HttpClient, public alert: AlertController) {
+    
+   }
 
 
 
   ngOnInit() {
 
-    this.sendgetRequest();
-    
-  //  console.log(tempArray[1]);
-
-  //this.scrollToBottomOnInit();
-
+    this.sendgetRequest()
   
-
-//  this.messages = this.sendPostRequest();
-
-
-    //  this.http.get("http://localhost:8080/chat/all")
-    //   .subscribe(data => {
-    //     console.log(data);
-    //     var count =Object.keys(data).length;
-    //     for (var i=0; i<count; i++)  
-    //     tempArray.push(<DataResponse>data[i]);
-    //     console.log( tempArray[0] );  
-    //     return tempArray;
-    //   }, error => {
-    //        console.log(error);   
-    //    });
   }
   
   updateScroll() {
@@ -66,22 +48,20 @@ export class ConnectDoctorPage implements OnInit {
     }
 }
 
+ delay(ms: number) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
+}
      
   sendgetRequest() {
-    
-    const headers= new HttpHeaders()
-    .set('content-type', 'application/json')
-    .set('Access-Control-Allow-Origin', '*')
-    .set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT')
-    .set('Accept','application/json');
+
 
     return this.http.get("http://localhost:8080/chat/all")
-      .subscribe(data => {
+      .subscribe(data => { 
         console.log(data);
         var count =Object.keys(data).length;
         for (var i=0; i<count; i++)  
         this.tempArray.push(<DataResponse>data[i]);
-        console.log( this.tempArray[0] );  
+        this.delay(400);
         setTimeout(() => {
           this.updateScroll();
       }, 500);
@@ -94,41 +74,31 @@ export class ConnectDoctorPage implements OnInit {
 
   }
 
+  
+
   async sendPostRequest() {
 
     const {input} = this
-    // var headers = new Headers();
-    // headers.append("Accept", 'application/json');
-    // headers.append('Content-Type', 'application/json' );
- //   const requestOptions = new RequestOptions({ headers: headers });
 
- 
-//  const headers= new HttpHeaders()
-//  .set('content-type', 'application/json')
-//  .set('Access-Control-Allow-Origin', 'http://localhost:8080/chat/getreply');
-
-  await this.showAlert("Success!", "Welcome aboard")
+  //await this.showAlert("Success!", "Welcome aboard")
 
     let postData = {
       "patientId": 1001,
       "chatBy": 1,
-      "chatContent": input
+      "chatContent": input,
+      "firebaseid": "abc123abc123"
   }
 
-    this.http.post("http://localhost:8080/chat/getreply", postData)
+   this.http.post("http://localhost:8080/chat/getreply", postData)
       .subscribe(data => {
         console.log(data['chatContent']);
+        let x = 1;
         if (data['chatContent'] == " your message will be redirected to a doctor,"){
-          // if(confirm("Are you sure to send question to a doctor? ")) {
-          //   console.log("Implement delete functionality here");
-          // }
-          ///////////////////////////
-
-          //async presentAlertConfirm() {
+          x = 0;
             const alert = this.alert.create({
               cssClass: 'my-custom-class',
               header: 'Confirm!',
-              message: 'Message <strong>text</strong>!!!',
+              message: 'Im not yet intelligent enough to answer this.. <strong>want to transfer this question to a doctor?</strong>!!!',
               buttons: [
                 {
                   text: 'Cancel',
@@ -136,6 +106,7 @@ export class ConnectDoctorPage implements OnInit {
                   cssClass: 'secondary',
                   handler: (blah) => {
                     console.log('Confirm Cancel: blah');
+                    location.reload();
                   }
                 }, {
                   text: 'Okay',
@@ -148,29 +119,22 @@ export class ConnectDoctorPage implements OnInit {
                       });
                     console.log('Confirm Okay');
                     console.log("***********Sending mail");
+                    location.reload();
                   }
                 }
               ]
             }).then(alert=> alert.present());
-          //}
-          ////////////////////////////
+
           
         }
+        if(data && x==1){
         location.reload();
+        }
        }, error => {
         console.log(error);
       });
   }
 
-
-  // sendPostRequest() {
-  //     const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar', 'Access-Control-Allow-Origin': 'http://localhost:8080/'}
-  //   const body = {  "patientId": 1,
-  //        "chatBy": 1,
-  //        "chatContent": "hi" }
-  //   this.http.post('http://localhost:8080/chat/getreply', body, { headers }).subscribe(
-  //   )
-  // }
 
   async showAlert(header: string, message: string) {
     const alert = await this.alert.create({

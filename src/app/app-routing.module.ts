@@ -25,6 +25,10 @@ const routes: Routes = [
   },  {
     path: 'connect-doctor',
     loadChildren: () => import('./connect-doctor/connect-doctor.module').then( m => m.ConnectDoctorPageModule)
+  },
+  {
+    path: 'select-doctor',
+    loadChildren: () => import('./select-doctor/select-doctor.module').then( m => m.SelectDoctorPageModule)
   }
 
 ];
