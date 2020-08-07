@@ -49,13 +49,17 @@ export class FormsPage implements OnInit {
   ngOnInit() {
     this.activateROute.queryParams.subscribe((res) => {
       this.queryParams = JSON.parse(res.value)
-      this.form.glu = this.queryParams.RESULT
+      this.form.glu = Number('this.queryParams.RESULT')
     });
   }
 
 
   selectTagSex(e) {
-    this.form.sex = e.detail.value;
+    if(e.detail.value == "1"){
+      this.form.sex = 1
+    }else {
+      this.form.sex = 0
+    }
   }
 
   // selectTagpregnant(e) {
@@ -63,19 +67,35 @@ export class FormsPage implements OnInit {
   // }
 
   selectTagStrokes(e) {
-    this.form.stroke = e.detail.value;
+    if(e.detail.value == "1"){
+      this.form.stroke = 1
+    }else {
+      this.form.stroke = 0
+    }
   }
 
   selectTagHypertesnion(e) {
-    this.form.hypertension = e.detail.value;
+    if(e.detail.value == "1"){
+      this.form.hypertension = 1
+    }else {
+      this.form.hypertension = 0
+    }
   }
 
   selectTagDiabetes(e) {
-    this.form.diabetes = e.detail.value;
+    if(e.detail.value == "1"){
+      this.form.diabetes = 1
+    }else {
+      this.form.diabetes = 0
+    }
   }
 
   selectTagBPmeds(e) {
-    this.form.bpmeds = e.detail.value;
+    if(e.detail.value == "1"){
+      this.form.bpmeds = 1
+    }else {
+      this.form.bpmeds = 0
+    }
   }
 
   // setheaders(): any {
