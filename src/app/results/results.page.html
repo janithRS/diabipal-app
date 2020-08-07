@@ -5,5 +5,21 @@
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Diabetes Prediction</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>diabtes mellitus state: {{query_params.diabetic_prediction}}</p>
+      
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab horizontal="start" vertical="bottom" slot="fixed">
+    <ion-fab-button color="dark">
+      <ion-icon md="caret-up" ios="chevron-forward-circle-outline" [routerLink]="['/tabs/tabs/feed']"></ion-icon>
+    </ion-fab-button>
+    
+  </ion-fab>
 
 </ion-content>
