@@ -4,6 +4,7 @@ import { auth, User } from 'firebase/app';
 import {Router} from "@angular/router";
 import {AlertController} from "@ionic/angular";
 import {UsersService} from "../users.service";
+import {LoaderService} from '../loader-service.service'
 
 
 @Component({
@@ -16,7 +17,12 @@ export class LoginPage implements OnInit {
   password: string = "";
   checkUser: string
 
-  constructor(public auth: AngularFireAuth, public alert: AlertController,public router: Router, public user: UsersService) {
+  constructor(
+    public auth: AngularFireAuth, 
+    public alert: AlertController,
+    public router: Router, 
+    public user: UsersService, 
+    private loader: LoaderService) {
     auth.onAuthStateChanged(function (user) {
       if (user) {
         router.navigate(['/tabs/tabs/feed'])
@@ -32,6 +38,7 @@ export class LoginPage implements OnInit {
   async login(){
     const { username, password } = this
     try {
+      this.loader.presentLoading("Logging in")
       const res = await this.auth.signInWithEmailAndPassword(username, password)
       if(res.user){
         this.user.setUser({

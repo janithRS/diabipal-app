@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {AngularFirestore} from "@angular/fire/firestore";
 import {UsersService} from "../users.service";
 import { Router } from '@angular/router';
+import { LoaderService } from "../loader-service.service";
+
 
 
 @Component({
@@ -12,12 +14,14 @@ import { Router } from '@angular/router';
 export class FeedPage implements OnInit {
   userPosts;
 
-  constructor(private afs: AngularFirestore, private user: UsersService, private router: Router) {
+  constructor(private afs: AngularFirestore, private user: UsersService, private router: Router, private loaderService: LoaderService) {
     const posts = afs.doc(`users/${user.getUID()}`)
     this.userPosts = posts.valueChanges();
   }
 
   ngOnInit() {
+    this.loaderService.presentLoading('Please wait')
+
   }
 
   redirectToChat(d) {

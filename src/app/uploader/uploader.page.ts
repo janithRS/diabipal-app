@@ -9,7 +9,8 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import * as firebase from 'firebase';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { HttpClient } from '@angular/common/http';
-import {Router} from '@angular/router'
+import {Router} from '@angular/router';
+import {LoaderService} from '../loader-service.service'
 // import { error } from 'console';
 // import { url } from 'inspector';
 
@@ -42,12 +43,14 @@ export class UploaderPage implements OnInit {
         private toast: ToastController,
         private fireStore: AngularFirestore,
         private http: HttpClient,
-        private router: Router
+        private router: Router,
+        private loader: LoaderService
     ) { }
 
     // list the content of the folder
     // create the folder if not existing
     ngOnInit() {
+        this.loader.presentLoading('Please wait')
         this.plt.ready().then(() => {
             let path = this.file.dataDirectory;
             this.file.checkDir(path, MEDIA_FOLDER_NAME).then(() => {
@@ -204,6 +207,7 @@ export class UploaderPage implements OnInit {
             console.log(storageRef)
 
             storageRef.getDownloadURL().then(async res => {
+                this.loader.presentLoading('Please wait')
                 this.dbUrl = res
                 console.log(this.dbUrl)
                 console.log("inside upload function", this.dbUrl)
@@ -213,7 +217,7 @@ export class UploaderPage implements OnInit {
                 }
                 this.http.post("https://diabipal-ocr.herokuapp.com/url", data)
                 .subscribe(data => {
-                    console.log(data)
+                    this.loader.presentLoading('Generating results')
                     this.gotoForms(data)
                 }, error => {
                     console.log(error);
