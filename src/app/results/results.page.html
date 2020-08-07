@@ -5,19 +5,92 @@
 </ion-header>
 
 <ion-content>
+
   <ion-card>
     <ion-card-header>
-      <ion-card-subtitle>Diabetes Prediction</ion-card-subtitle>
+      <ion-card-title>Diabetes Prediction</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>diabtes mellitus state: {{query_params.diabetic_prediction}}</p>
-      
+      <p>diabetes mellitus state: 
+        {{query_params.diabetic_prediction}}
+      </p>      
     </ion-card-content>
   </ion-card>
 
-  <ion-fab horizontal="start" vertical="bottom" slot="fixed">
-    <ion-fab-button color="dark">
-      <ion-icon md="caret-up" ios="chevron-forward-circle-outline" [routerLink]="['/tabs/tabs/feed']"></ion-icon>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>CVD Prediction</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>cardio vascular disease risk: 
+        {{query_params.cardio_positive}}
+      </p>      
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>BMI Analysis</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Obesity Stage: {{query_params.ob_stage}}</p>
+      <p>Recommended Obesity Therapy: {{query_params.ob_therapy}}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card color="primary">
+    <ion-card-header>
+      <ion-card-title>Nutrition</ion-card-title>
+      <ion-card-subtitle>Recommendations</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{query_params.nutrition_info}}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card color="secondary">
+    <ion-card-header>
+      <ion-card-title>Physical</ion-card-title>
+      <ion-card-subtitle>Recommendations</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{query_params.physical_info}}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card color="tertiary">
+    <ion-card-header>
+      <ion-card-title>Smoke</ion-card-title>
+      <ion-card-subtitle>Recommendations</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{query_params.smoking_info}}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card color="success">
+    <ion-card-header>
+      <ion-card-title>Sleep</ion-card-title>
+      <ion-card-subtitle>Recommendations</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{query_params.sleep_info}}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card color="medium">
+    <ion-card-header>
+      <ion-card-title>Sleep</ion-card-title>
+      <ion-card-subtitle>Recommendations</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{query_params.sleep_info}}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="home" [routerLink]="['/tabs/tabs/feed']"></ion-icon>
     </ion-fab-button>
     
   </ion-fab>
