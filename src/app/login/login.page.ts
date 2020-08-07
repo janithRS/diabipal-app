@@ -27,10 +27,6 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.onAuthStateChanged(function(u) {
-      
-    });
-
   }
 
   async login(){

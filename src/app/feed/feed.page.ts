@@ -21,4 +21,5 @@ export class FeedPage implements OnInit {
   redirectToChat() {
 
   }
+
 }
