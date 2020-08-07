@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import {canActivate} from "@angular/fire/auth-guard";
-import {AuthService} from './auth.service'
+import { AuthService } from './auth.service';
 
 const routes: Routes = [
   // {
@@ -24,9 +23,13 @@ const routes: Routes = [
   {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule),
-    canActivate: [AuthService]
+    canActivate:[AuthService]
+  },
+  {
+    path: 'results',
+    loadChildren: () => import('./results/results.module').then( m => m.ResultsPageModule)
   }
-];
+]
 
 @NgModule({
   imports: [
