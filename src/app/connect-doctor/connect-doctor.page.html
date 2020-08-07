@@ -1,10 +1,10 @@
 <!-- <ion-card *ngFor="let user of message"> -->
-  <!-- <ion-card >
-  <ion-item>
-    <ion-icon name="walk" slot="start"></ion-icon>
-    <ion-label>{{user.id}}</ion-label>
-  </ion-item>
-  
+<!-- <ion-card >
+<ion-item>
+  <ion-icon name="walk" slot="start"></ion-icon>
+  <ion-label>{{user.id}}</ion-label>
+</ion-item>
+
 </ion-card> -->
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -12,35 +12,41 @@
 <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
 <ion-content [scrollEvents]="true">
-  <ion-virtual-scroll [items]="tempArray" approxItemHeight="320px">
-    <ion-card *virtualItem="let item; let last = last; let itemBounds = bounds;" [ngStyle]="{'background-color': item.chatBy === 1 ? '#2196F3' : item.chatBy === 2 ? '#E0E0E0' : '#009688'}" style="color: black; font-weight: bold">
-      <!-- 'background-color':item.chatBy === 1 ? 'red' : background-color':item.chatBy === 2 ? 'green' : '#00c9c7' -->
-      <!-- question.score.toFixed(1) < 3 ? 'red' : question.score.toFixed(1) > 7 ? 'green' : '#00c9c7' -->
-      
-      <!-- <div>
-        <ion-img [src]="item.imgSrc" [height]="item.imgHeight" [alt]="item.name"></ion-img>
-      </div> -->
-    <!-- <ion-card-header>
-      <ion-card-title>{{ item.id }}</ion-card-title>
-    </ion-card-header> -->
-    <ion-card-content>{{ item.chatContent }}</ion-card-content>
-    </ion-card>
-  </ion-virtual-scroll>
+    <ion-virtual-scroll [items]="tempArray" approxItemHeight="320px">
+        <ion-card *virtualItem="let item; let last = last; let itemBounds = bounds;"
+                  [ngStyle]="{'background-color': item.chatBy === 1 ? '#2196F3' : item.chatBy === 2 ? '#E0E0E0' : '#009688'}"
+                  style="color: black; font-weight: bold">
+            <!-- 'background-color':item.chatBy === 1 ? 'red' : background-color':item.chatBy === 2 ? 'green' : '#00c9c7' -->
+            <!-- question.score.toFixed(1) < 3 ? 'red' : question.score.toFixed(1) > 7 ? 'green' : '#00c9c7' -->
+
+            <!-- <div>
+              <ion-img [src]="item.imgSrc" [height]="item.imgHeight" [alt]="item.name"></ion-img>
+            </div> -->
+            <!-- <ion-card-header>
+              <ion-card-title>{{ item.id }}</ion-card-title>
+            </ion-card-header> -->
+            <ion-card-content>{{ item.chatContent }}</ion-card-content>
+        </ion-card>
+    </ion-virtual-scroll>
 </ion-content>
-<br>
-<ion-item>
-  <ion-input type="text" placeholder="Enter Question" [(ngModel)]="input"></ion-input>
-  <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" style="background-color:#2196F3;" (click)="sendPostRequest()">
-    <i class="material-icons">send</i>
-  </button>
- </ion-item>
+<ion-footer>
+    <ion-toolbar>
+        <div class="ion-padding">
+        <ion-item>
+            <ion-input type="text" placeholder="Enter Question" [(ngModel)]="input"></ion-input>
+            <ion-button shape="round" size="default" (click)="sendPostRequest()">
+                <ion-icon name="send">send</ion-icon>
+            </ion-button>
+        </ion-item>
+        </div>
+    </ion-toolbar>
+</ion-footer>
 <!-- <ion-list *ngFor="let user of tempArray">
   <ion-item>
     <ion-label>{{user.chatContent}}</ion-label>
   </ion-item>
   
 </ion-list> -->
-
 
 
 <!-- <div *ngFor="let user of tempArray">{{user.id}}</div> -->

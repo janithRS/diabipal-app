@@ -1,13 +1,27 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Profile</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>Profile</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="redirectToChat()">
-      <ion-icon name="chatbubbles-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+    <ion-card>
+        <img src="https://scontent.fcmb4-1.fna.fbcdn.net/v/l/t1.0-9/p960x960/64634292_2263579000401730_8022046783397953536_o.jpg?_nc_cat=103&_nc_sid=85a577&_nc_ohc=rYHO0Z6KuHAAX8yuvG6&_nc_ht=scontent.fcmb4-1.fna&_nc_tp=6&oh=93134618e4dafc4ec7ab88a7024b86b9&oe=5F51E1ED"/>
+        <ion-card-header>
+            <ion-card-title class="ion-text-center">{{name}}</ion-card-title>
+            <ion-col>
+                <ion-button size="small" expand="block" (click)="logoutRoute()">Logout</ion-button>
+            </ion-col>
+        </ion-card-header>
+        <!--    <ion-card-content class="ion-text-center">-->
+        <!--      <p>Age: 23</p>-->
+        <!--      <p>Sex: Male</p>-->
+        <!--    </ion-card-content>-->
+    </ion-card>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="redirectToChat()">
+            <ion-icon name="chatbubbles-outline"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>
