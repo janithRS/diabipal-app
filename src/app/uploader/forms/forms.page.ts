@@ -8,6 +8,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { PredictionResults } from "../../../models/preditctionresults.model";
 import { firestore } from "firebase/app";
+import {ActivatedRoute} from '@angular/router'
 
 @Component({
   selector: "app-forms",
@@ -19,12 +20,12 @@ export class FormsPage implements OnInit {
     private http: HttpClient,
     private users: UsersService,
     private aftStore: AngularFirestore,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private activateROute: ActivatedRoute
   ) {}
 
   userID: string;
-
-  ngOnInit() {}
+  queryParams: any
 
   form = {} as Forms;
   predictionResults = {} as PredictionResults;
@@ -32,6 +33,16 @@ export class FormsPage implements OnInit {
   hidden: boolean = true;
   cardioPredictionURL: string;
   diabetesPredictionURL: string;
+
+  ngOnInit() {
+    this.activateROute.queryParams.subscribe((res) => {
+      this.queryParams = JSON.parse(res.value)
+      console.log(this.queryParams.RESULT)
+      this.form.glu = this.queryParams.RESULT
+
+    })
+  }
+
 
   selectTagSex(e) {
     this.form.sex = e.detail.value;
@@ -84,6 +95,11 @@ export class FormsPage implements OnInit {
         ped: this.form.ped,
         skin: this.form.skin,
       };
+
+      console.log(diabetesData)
+
+      console.log
+
       this.http
         .post(this.diabetesPredictionURL, diabetesData)
         .subscribe((data) => {

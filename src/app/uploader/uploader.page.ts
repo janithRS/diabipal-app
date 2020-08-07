@@ -179,6 +179,8 @@ export class UploaderPage implements OnInit {
 
         const imageId = new Date().getTime() + randomID;
 
+        
+
         //  save images inside files folder
         const uploadTask = this.storage.upload(`files/${imageId}`, fileBlob);
         // console.log("ID",imageId)
@@ -198,6 +200,9 @@ export class UploaderPage implements OnInit {
 
             // get url after file is uploaded
             const storageRef = firebase.storage().ref(`files/` + imageId)
+
+            console.log(storageRef)
+
             storageRef.getDownloadURL().then(async res => {
                 this.dbUrl = res
                 console.log(this.dbUrl)
@@ -221,7 +226,7 @@ export class UploaderPage implements OnInit {
     }
 
     gotoForms(data){
-        this.router.navigate(['/tabs/uploader/forms'],
+        this.router.navigate(['/tabs/tabs/uploader/forms'],
             {
                 queryParams: {
                     value: JSON.stringify(data)
