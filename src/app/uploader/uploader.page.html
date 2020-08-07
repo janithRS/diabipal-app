@@ -5,7 +5,45 @@
 </ion-header>
 
 <ion-content>
-  <div class="camera"></div>
-  <input type="file" (change)="fileChanged($event)" />
-  <ion-button [routerLink]="['//tabs/tabs/uploader/forms']">Forms</ion-button>
+
+  <!-- progress bar for cloud upload -->
+  <ion-progress-bar [value]="uploadProgress" color="secondary"></ion-progress-bar>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let f of files">
+      <ion-item (click)="openFile(f)">
+        <ion-icon name="image" slot="start" *ngIf="f.name.endsWith('jpg')"></ion-icon>
+        <ion-icon name="image" slot="start" *ngIf="f.name.endsWith('png')"></ion-icon>
+
+        <ion-label class="ion-text-wrap">
+          {{ f.name }}
+          <p>{{ f.fullPath }}</p>
+        </ion-label>
+      </ion-item>
+
+      <!-- The option buttons for an ion-item-sliding.  -->
+      <ion-item-options side="end">
+        <!-- delete option -->
+        <ion-item-option (click)="uploadFile(f)" color="primary">
+          <ion-icon name="cloud-upload" slot="icon-only"></ion-icon>
+        </ion-item-option>
+        <!-- Upload to cloud option -->
+        <ion-item-option (click)="deleteFile(f)" color="danger">
+          <ion-icon name="trash" slot="icon-only"></ion-icon>
+        </ion-item-option>
+
+      </ion-item-options>
+
+    </ion-item-sliding>
+  </ion-list>
+ 
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar color="primary">
+    <ion-button fill="clear" expand="full" color="light" (click)="selectMedia()">
+      <ion-icon slot="start" name="document"></ion-icon>
+      Select Media
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
