@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// import { HttpClient } from "@angular/common/http";
 import { Platform, ActionSheetController, ToastController } from '@ionic/angular';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { MediaCapture, MediaFile, CaptureError } from '@ionic-native/media-capture/ngx';
@@ -9,6 +8,9 @@ import { AngularFireStorage } from '@angular/fire/storage';
 // import { async } from '@angular/core/testing';
 import * as firebase from 'firebase';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { HttpClient } from '@angular/common/http';
+import {Router} from '@angular/router'
+// import { error } from 'console';
 // import { url } from 'inspector';
 
 const MEDIA_FOLDER_NAME = 'my_media';
@@ -24,7 +26,9 @@ export class UploaderPage implements OnInit {
     // androidPermissions: any;
     uploadProgress = 0;
     cloudFiles = [];
-    dbUrl: "";
+    dbUrl: String;
+
+    urls : "";
     // imageId: "";
 
     constructor(
@@ -36,7 +40,9 @@ export class UploaderPage implements OnInit {
         private plt: Platform,
         private storage: AngularFireStorage,
         private toast: ToastController,
-        private fireStore: AngularFirestore
+        private fireStore: AngularFirestore,
+        private http: HttpClient,
+        private router: Router
     ) { }
 
     // list the content of the folder
@@ -194,17 +200,35 @@ export class UploaderPage implements OnInit {
             const storageRef = firebase.storage().ref(`files/` + imageId)
             storageRef.getDownloadURL().then(async res => {
                 this.dbUrl = res
+                console.log(this.dbUrl)
                 console.log("inside upload function", this.dbUrl)
                 // return this.dbUrl;
+                let data = {
+                    url : this.dbUrl.toString()
+                }
+                this.http.post("https://diabipal-ocr.herokuapp.com/url", data)
+                .subscribe(data => {
+                    console.log(data)
+                    this.gotoForms(data)
+                }, error => {
+                    console.log(error);
+        
+                })
             });
         })
 
-        // save uid and urlin db
-        // this.fireStore.doc(`songList/${uid}`).set({
-        //     uid: userId,
-        //     url: this.dbUrl
-        // });
         
+    }
+
+    gotoForms(data){
+        this.router.navigate(['/tabs/uploader/forms'],
+            {
+                queryParams: {
+                    value: JSON.stringify(data)
+                }
+            }
+        )
+
     }
 
 
