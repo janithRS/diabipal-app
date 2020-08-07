@@ -159,6 +159,7 @@ export class FormsPage implements OnInit {
         height: this.form.height,
         weight: this.form.weight,
         diaBp: this.form.bp,
+        sysBp: 132,
         glu: this.form.glu,
         totChol: this.form.totChol,
         bpmeds: this.form.bpmeds,
@@ -170,6 +171,7 @@ export class FormsPage implements OnInit {
         diabetes: diabeticStatus,
       };
 
+      console.log(postData)
       console.log(diabetesData)
 
       this.http
@@ -178,6 +180,8 @@ export class FormsPage implements OnInit {
 
           this.predictionResults.cardio_positive = data["positive prediction"] + "%";
           this.predictionResults.cardio_negative = data["negative prediction"] + "%";
+
+          console.log(this.predictionResults)
 
           const cardiopositve = this.predictionResults.cardio_positive;
           const cardionegative = this.predictionResults.cardio_negative;
@@ -198,8 +202,7 @@ export class FormsPage implements OnInit {
           const strokes = this.form.stroke;
           const hypertension = this.form.hypertension;
           const cigs = this.form.cigs;
-          const diastolic_blood_pressure = this.form.diaBp;
-          const systolic_blood_pressure = this.form.sysBp;
+          const diastolic_blood_pressure = this.form.bp;
           const current_date = new Date()
           const timeStamp = current_date.getTime()
 
@@ -227,7 +230,6 @@ export class FormsPage implements OnInit {
               hypertension,
               cigs,
               diastolic_blood_pressure,
-              systolic_blood_pressure,
               current_date,
               timeStamp
 

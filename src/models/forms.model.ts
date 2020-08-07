@@ -1,20 +1,20 @@
 export interface Forms{
     height: number
     weight: number 
-    sex: string 
-    glu: string 
-    age: string 
-    bp: string 
-    skin: string 
-    ped: string 
-    ins: string 
-    preg: string 
-    hypertension: string 
-    totChol: string 
-    cigs: string 
-    stroke: string 
-    bpmeds: string 
-    diaBp: string 
-    sysBp: string 
-    diabetes: string 
+    sex: number 
+    glu: number 
+    age: number 
+    bp: number 
+    skin: number 
+    ped: number 
+    ins: number 
+    preg: number 
+    hypertension: number 
+    totChol: number 
+    cigs: number 
+    stroke: number 
+    bpmeds: number 
+    diaBp: number
+    sysBp: number 
+    diabetes: number 
 }
