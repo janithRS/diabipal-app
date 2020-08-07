@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AngularFirestore} from "@angular/fire/firestore";
+import {Router} from "@angular/router";
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 
@@ -12,7 +13,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class ProfilePage implements OnInit {
 
   // name: string =
-  constructor(private auth: AngularFireAuth) {
+  constructor(public router: Router, private auth: AngularFireAuth) {
 
   }
 
@@ -27,6 +28,6 @@ export class ProfilePage implements OnInit {
   }
 
     redirectToChat() {
-
+      this.router.navigate(['/connect-doctor'])
     }
 }

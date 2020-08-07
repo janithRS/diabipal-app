@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>select-doctor</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item-sliding #item>
+      <ion-item *ngFor="let item of tempArray">
+        <!-- <ion-item> -->
+          <p>{{item.name}}</p>
+          <button ion-button outline slot="end" (click)="sendupdateRequest(item.did)">
+            Select
+            <ion-icon name="create"></ion-icon>
+          </button>
+      </ion-item>
+    </ion-item-sliding>
+</ion-list>
+
+</ion-content>
