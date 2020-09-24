@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: ResultsPage
+  },
+  {
+    path: 'cardiovascular',
+    loadChildren: () => import('./cardiovascular/cardiovascular.module').then( m => m.CardiovascularPageModule)
   }
 ];
 
