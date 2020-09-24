@@ -6,15 +6,23 @@
 
 <ion-content>
 
+  <ion-item>
+    <!-- <ion-input type="text" placeholder="Enter symptoms"></ion-input>
+    <ion-button color="success" (click)="sendDoctorRecommendRequest()">Submit</ion-button> -->
+    <p style="font-weight: bold">Selected Doctor : </p>
+    <p style="font-weight: bold">{{docname}}</p>
+    <br>
+</ion-item>
+
   <ion-list>
     <ion-item-sliding #item>
       <ion-item *ngFor="let item of tempArray">
         <!-- <ion-item> -->
           <p>{{item.name}}</p>
-          <button ion-button outline slot="end" (click)="sendupdateRequest(item.did)">
+          <ion-button ion-button outline slot="end"  (click)="sendupdateRequest(item.did)">
             Select
             <ion-icon name="create"></ion-icon>
-          </button>
+          </ion-button>
       </ion-item>
     </ion-item-sliding>
 </ion-list>

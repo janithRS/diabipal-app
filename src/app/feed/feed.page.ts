@@ -42,7 +42,8 @@ export class FeedPage implements OnInit {
       physical_info: d.physical_info,
       sleep_info: d.sleep_info,
       behavioral_info: d.behavioral_info,
-      smoking_info: d.smoking_info
+      smoking_info: d.smoking_info,
+      timestamp: d.timeStamp
     }
     this.router.navigate(['/results'], {
       queryParams: {

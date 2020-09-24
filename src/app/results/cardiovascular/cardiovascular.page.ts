@@ -12,6 +12,8 @@ import {UsersService} from "../../users.service";
 export class CardiovascularPage implements OnInit {
 
   query_params : any
+  bmisuggestion : any
+  ishidden : boolean = true
 
   constructor(
     public activatedRoute : ActivatedRoute, 
@@ -21,10 +23,18 @@ export class CardiovascularPage implements OnInit {
     this.activatedRoute.queryParams.subscribe((res)=>{
       this.query_params = JSON.parse(res.value)
       console.log(this.query_params)
+      if(this.query_params.ob_stage == "1"){
+        this.checkObstage()
+        this.ishidden = false
+      }
     });
    }
 
   ngOnInit() {
+  }
+
+  checkObstage(){
+    this.bmisuggestion = "Maintain the calory intake lower than the TDEE estimation"
   }
 
 }

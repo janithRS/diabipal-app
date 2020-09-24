@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {AlertController} from '@ionic/angular';
 import { Doctor } from '../select-doctor/doctor';
+import { UsersService } from "../users.service";
 
 interface DataResponse {
   did: number;
@@ -17,18 +18,37 @@ interface DataResponse {
 export class SelectDoctorPage implements OnInit {
 
   tempArray: Doctor[] = [];
+  docname: String;
 
-  constructor(private http: HttpClient, public alert: AlertController) { }
+  constructor(private http: HttpClient, public alert: AlertController, private user: UsersService) { }
 
   ngOnInit() {
 
     this.sendgetRequest();
+    this.getPatientsDoctor()
+  }
+
+  sendDoctorRecommendRequest() {
+    
+  }
+
+  getPatientsDoctor() {
+
+    let uid = this.user.getUID();
+    return this.http.get("http://ec2-54-165-166-212.compute-1.amazonaws.com:8080/patient/getpatientfromid/"+uid)
+      .subscribe(data => {
+        console.log(data.toString);
+         this.docname=data["doctorId"].name;
+         console.log("##########"+this.docname)
+      }, error => {
+           console.log(error);   
+       });
   }
 
   sendgetRequest() {
 
 
-    return this.http.get("http://localhost:8080/doctor/all")
+    return this.http.get("http://ec2-54-165-166-212.compute-1.amazonaws.com:8080/doctor/all")
       .subscribe(data => {
         console.log(data);
         var count =Object.keys(data).length;
@@ -45,7 +65,7 @@ export class SelectDoctorPage implements OnInit {
 
     
     let postData = {
-      "firebaseid": "abc123abc123",
+      "firebaseid": this.user.getUID(),
       "doctorId": {
           "did": did
     }
@@ -54,7 +74,7 @@ export class SelectDoctorPage implements OnInit {
     const alert = this.alert.create({
       cssClass: 'my-custom-class',
       header: 'Confirm!',
-      message: 'select this doctor? <strong>Select this as your primary doctor?</strong>!!!',
+      message: '<strong>Do you want to select this as your primary doctor?</strong>!!!',
       buttons: [
         {
           text: 'Cancel',
@@ -66,7 +86,7 @@ export class SelectDoctorPage implements OnInit {
         }, {
           text: 'Okay',
           handler: () => {
-              this.http.post("http://localhost:8080/patient/updatepatient", postData)
+              this.http.post("http://ec2-54-165-166-212.compute-1.amazonaws.com:8080/patient/updatepatient", postData)
               .subscribe(data => {
                 console.log(data);
               }, error => {
