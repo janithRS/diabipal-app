@@ -16,7 +16,7 @@ export class FeedPage implements OnInit {
 
   constructor(private afs: AngularFirestore, private user: UsersService, private router: Router, private loaderService: LoaderService) {
     const posts = afs.doc(`users/${user.getUID()}`)
-    this.userPosts = posts.valueChanges();
+    this.userPosts = posts.valueChanges();    
   }
 
   ngOnInit() {
@@ -31,6 +31,8 @@ export class FeedPage implements OnInit {
     let  values = {
       cardio_positive: d.cardiopositve,
       cardio_negative: d.cardionegative,
+      bmr: d.bmr,
+      tdee: d.tdee,
       diabetic_positive_prob: d.diabetespositive,
       diabetic_negative_prob: d.diabetesnegative,
       diabetic_prediction: d.diabetic_prediction,

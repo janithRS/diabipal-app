@@ -9,12 +9,14 @@ export interface Forms{
     ped: number 
     ins: number 
     preg: number 
-    hypertension: number 
+    // hypertension: number 
     totChol: number 
     cigs: number 
-    stroke: number 
-    bpmeds: number 
+    // stroke: number 
+    // bpmeds: number 
     diaBp: number
-    sysBp: number 
+    // sysBp: number 
     diabetes: number 
+    exercise: number
 }
+

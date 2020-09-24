@@ -29,10 +29,10 @@
         <ion-label position="floating">Weight (kg)</ion-label>
         <ion-input type="number" [(ngModel)]="form.weight"required></ion-input>
       </ion-item>
-      <!-- <ion-item>
+      <ion-item>
         <ion-label position="floating">Glucose</ion-label>
         <ion-input type="number" [(ngModel)]="form.glu" required></ion-input>
-      </ion-item> -->
+      </ion-item>
       <ion-item>
         <ion-label position="floating">Blood Pressure</ion-label>
         <ion-input type="number" [(ngModel)]="form.bp" required></ion-input>
@@ -54,35 +54,56 @@
         <ion-input type="number" [(ngModel)]="form.preg" required></ion-input>
       </ion-item>
       
-      <ion-item>
+      <!-- <ion-item>
         <ion-label position="floating">Experienced strokes</ion-label>
         <ion-select (ionChange)="selectTagStrokes($event)" interface="popover">
           <ion-select-option value="1">Yes</ion-select-option>
           <ion-select-option value="0">No</ion-select-option>
         </ion-select>
-      </ion-item>
-      <ion-item>
+      </ion-item> -->
+
+      <!-- <ion-item>
         <ion-label position="floating">Hypertension</ion-label>
         <ion-select (ionChange)="selectTagHypertesnion($event)" interface="popover">
           <ion-select-option value="1">Yes</ion-select-option>
           <ion-select-option value="0">No</ion-select-option>
         </ion-select>      
-      </ion-item>
-      <ion-item>
+      </ion-item> -->
+
+      <!-- <ion-item>
         <ion-label position="floating">Currently using BP medication</ion-label>
         <ion-select (ionChange)="selectTagBPmeds($event)" interface="popover">
           <ion-select-option value="1">Yes</ion-select-option>
           <ion-select-option value="0">No</ion-select-option>
         </ion-select>       
-      </ion-item>
+      </ion-item> -->
 
       <ion-item>
         <ion-label position="floating">Cholesterol level</ion-label>
         <ion-input type="number" [(ngModel)]="form.totChol" required></ion-input>
       </ion-item>
+
       <ion-item>
-        <ion-label position="floating">Cigarrette intake per day</ion-label>
-        <ion-input type="number" [(ngModel)]="form.cigs" required></ion-input>
+        <ion-label position="floating">Cigarrette intake</ion-label>
+        <ion-select (ionChange)="selectTagcigs($event)" interface="popover">
+          <ion-select-option value="1">Yes</ion-select-option>
+          <ion-select-option value="0">No</ion-select-option>
+        </ion-select>
+        <!-- <ion-input type="number" [(ngModel)]="form.cigs" required></ion-input> -->
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Number of days you exercise</ion-label>
+        <ion-select (ionChange)="selectTagexercise($event)" interface="popover">
+          <ion-select-option value="0">0</ion-select-option>
+          <ion-select-option value="1">1</ion-select-option>
+          <ion-select-option value="2">2</ion-select-option>
+          <ion-select-option value="3">3</ion-select-option>
+          <ion-select-option value="4">4</ion-select-option>
+          <ion-select-option value="5">5</ion-select-option>
+          <ion-select-option value="6">6</ion-select-option>
+        </ion-select>
+        <!-- <ion-input type="number" [(ngModel)]="form.cigs" required></ion-input> -->
       </ion-item>
 
       <!-- <ion-item>

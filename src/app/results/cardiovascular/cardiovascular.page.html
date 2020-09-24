@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-toolbar>
+    
+      <ion-title>cardiovascular</ion-title>
+
+    </ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Cardiovascular Prediction</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h3>Cardiovascular disease state: 
+      </h3>
+      <h3>Positive prediction: {{query_params.cardio_positive}}</h3>
+    </ion-card-content>
+  </ion-card>
+ 
+  <ion-card>
+    <ion-card-header>
+      Basal Metabolic rate 
+    </ion-card-header>
+    <ion-card-content>
+      <p><b>Estimation of the number of calories your body needs to accomplish its most basic
+      (basal) life-sustaining functions</b></p>
+      <h3>BMR value : {{query_params.bmr}}</h3> 
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      Total Daily Engery Expenditure
+    </ion-card-header>
+    <ion-card-content>
+      <p>
+      <b>Estimation of how many calories you burn each day including typical exercise</b>
+      </p>
+      <h2>TDEE value : {{query_params.tdee}}</h2> 
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="home" [routerLink]="['/tabs/tabs/feed']"></ion-icon>
+    </ion-fab-button>
+    
+  </ion-fab>
+
+</ion-content>

@@ -6,7 +6,7 @@ import {Router} from "@angular/router";
 import {AngularFirestore} from "@angular/fire/firestore";
 import {UsersService} from "../users.service";
 import {LoaderService} from '../loader-service.service'
-
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 
 @Component({
@@ -26,22 +26,23 @@ export class RegisterPage implements OnInit {
         public router: Router, 
         public afstore: AngularFirestore, 
         private user: UsersService,
-        private loader: LoaderService
+        private loader: LoaderService,
+        private http : HttpClient
         ) {}
 
     ngOnInit() {
     }
 
     async register() {
-        this.loader.presentLoading('Please wait')
         const {username, password, cpassword} = this
         if (password != cpassword) {
             await this.showAlert("Error!", "Password don't match")
             return console.error("Passwords don't match")
         }
         try {
+            this.loader.presentLoading('Please wait')
             const res = await this.auth.createUserWithEmailAndPassword(username, password)
-
+            
             await this.afstore.doc(`users/${res.user.uid}`).set({
                 username
             })
@@ -50,8 +51,9 @@ export class RegisterPage implements OnInit {
                 username,
                 uid: res.user.uid
             })
-
+            
             // await this.showAlert("Success!", "Welcome aboard")
+            await this.sendUserdata(username, res.user.uid)
             await this.router.navigate(['/tabs'])
 
         } catch (e) {
@@ -67,6 +69,17 @@ export class RegisterPage implements OnInit {
             buttons: ['OK']
         })
         await alert.present()
+    }
+
+    async sendUserdata(username, firebaseID){
+        let chatURL = "http://ec2-54-165-166-212.compute-1.amazonaws.com:8080/patient/savepatient"
+        let body = {
+            firebaseid : firebaseID,
+            name : username
+        }
+        this.http.post(chatURL, body).subscribe(data => {
+            console.log(data)
+        })
     }
 
     loginRoute() {

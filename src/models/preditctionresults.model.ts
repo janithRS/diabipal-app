@@ -1,6 +1,8 @@
 export interface PredictionResults{
     cardio_positive: string
     cardio_negative: string
+    bmr: string
+    tdee: string
     diabetic_positive_prob: string
     diabetic_negative_prob: string
     diabetic_prediction: string

@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router'
 import { Router } from '@angular/router';
 import { ToastController, LoadingController } from '@ionic/angular'
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { AlertController } from '@ionic/angular';
 
 
 @Component({
@@ -25,9 +26,10 @@ export class FormsPage implements OnInit {
   form = {} as Forms;
   predictionResults = {} as PredictionResults;
 
-  hidden: boolean = true;
-  cardioPredictionURL: string;
-  diabetesPredictionURL: string;
+  hidden: boolean = true
+  cardioPredictionURL: string
+  diabetesPredictionURL: string
+  formCorrect: boolean = true
 
   constructor(
     private http: HttpClient,
@@ -39,8 +41,9 @@ export class FormsPage implements OnInit {
     private loadCtrl: LoadingController,
     private activateROute: ActivatedRoute,
     private loadingController: LoadingController,
-    private loaderService: LoaderService
-
+    private loaderService: LoaderService,
+    private alertController : AlertController,
+    private user : UsersService
   ) { }
 
   userID: string;
@@ -62,42 +65,73 @@ export class FormsPage implements OnInit {
     }
   }
 
-  // selectTagpregnant(e) {
+  selectTagexercise(e){
+    this.form.exercise = e.detail.value
+  }
+
+  selectTagcigs(e){
+    if(e.detail.value == "1"){
+      this.form.cigs = 1
+    }else {
+      this.form.cigs = 0
+    }
+  }
+
+  checkCholLevel(){
+    if(this.form.age > 20){
+      if(this.form.totChol < 125){
+        this.formCorrect = false
+        this.presentAlert("Check Cholesterol levels")
+      }
+    }
+  }
+
+  async presentAlert(msg) {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      subHeader: 'Inaccurate Details',
+      message: msg,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+// selectTagpregnant(e) {
   //   this.form.preg = e.detail.value;
   // }
 
-  selectTagStrokes(e) {
-    if(e.detail.value == "1"){
-      this.form.stroke = 1
-    }else {
-      this.form.stroke = 0
-    }
-  }
+  // selectTagStrokes(e) {
+  //   if(e.detail.value == "1"){
+  //     this.form.stroke = 1
+  //   }else {
+  //     this.form.stroke = 0
+  //   }
+  // }
 
-  selectTagHypertesnion(e) {
-    if(e.detail.value == "1"){
-      this.form.hypertension = 1
-    }else {
-      this.form.hypertension = 0
-    }
-  }
+  // selectTagHypertesnion(e) {
+  //   if(e.detail.value == "1"){
+  //     this.form.hypertension = 1
+  //   }else {
+  //     this.form.hypertension = 0
+  //   }
+  // }
 
-  selectTagDiabetes(e) {
-    if(e.detail.value == "1"){
-      this.form.diabetes = 1
-    }else {
-      this.form.diabetes = 0
-    }
-  }
+  // selectTagDiabetes(e) {
+  //   if(e.detail.value == "1"){
+  //     this.form.diabetes = 1
+  //   }else {
+  //     this.form.diabetes = 0
+  //   }
+  // }
 
-  selectTagBPmeds(e) {
-    if(e.detail.value == "1"){
-      this.form.bpmeds = 1
-    }else {
-      this.form.bpmeds = 0
-    }
-  }
-
+  // selectTagBPmeds(e) {
+  //   if(e.detail.value == "1"){
+  //     this.form.bpmeds = 1
+  //   }else {
+  //     this.form.bpmeds = 0
+  //   }
+  // }
   // setheaders(): any {
   //   return {
   //     headers: new HttpHeaders()
@@ -105,8 +139,7 @@ export class FormsPage implements OnInit {
   //       .append("Access-Control-Allow-Headers", "Content-Type")
   //       .append("Access-Control-Allow-Origin", "*"),
   //   };
-  // }
-
+  // 
   displayResults() {
     this.router.navigate(['/results'], {
       queryParams: {
@@ -117,31 +150,36 @@ export class FormsPage implements OnInit {
 
   async calculatePredictions() {
 
-    this.loaderService.presentLoading("Please wait")
+    this.checkCholLevel()
 
-    try {
+    if(this.formCorrect){
+      this.loaderService.presentLoading("Please wait")
 
-      this.cardioPredictionURL = "https://dry-lake-13859.herokuapp.com/predict";
-
-      this.diabetesPredictionURL = "https://diabipal.herokuapp.com/predict";
-
-      const diabetesData = {
-        bmi:
-          this.form.weight /
-          ((this.form.height / 100) * (this.form.height / 100)),
-        glu: this.form.glu,
-        bp: this.form.bp,
-        age: this.form.age,
-        preg: this.form.preg,
-        ins: this.form.ins,
-        ped: this.form.ped,
-        skin: this.form.skin,
-      };
-
-      await this.createprediction(diabetesData)
-
-    } catch (e) { console.log(e) }
-
+      try {
+  
+        this.cardioPredictionURL = "https://dry-lake-13859.herokuapp.com/predict";
+        // this.cardioPredictionURL = " http://127.0.0.1:5000/predict";
+  
+  
+        this.diabetesPredictionURL = "https://diabipal.herokuapp.com/predict";
+  
+        const diabetesData = {
+          bmi:
+            this.form.weight /
+            ((this.form.height / 100) * (this.form.height / 100)),
+          glu: this.form.glu,
+          bp: this.form.bp,
+          age: this.form.age,
+          preg: this.form.preg,
+          ins: this.form.ins,
+          ped: this.form.ped,
+          skin: this.form.skin,
+        };
+  
+        await this.createprediction(diabetesData)
+  
+      } catch (e) { console.log(e) }
+    }
   }
 
 
@@ -169,21 +207,17 @@ export class FormsPage implements OnInit {
         } else {
           diabeticStatus = 1;
         }
-
         var postData = {
           height: this.form.height,
           weight: this.form.weight,
           diaBp: this.form.bp,
-          sysBp: 132,
           glu: this.form.glu,
           totChol: this.form.totChol,
-          bpmeds: this.form.bpmeds,
-          stroke: this.form.stroke,
-          hypertension: this.form.hypertension,
           cigs: this.form.cigs,
           age: this.form.age,
           sex: this.form.sex,
           diabetes: diabeticStatus,
+          exerciseRate: this.form.exercise
         };
 
         console.log(postData)
@@ -195,16 +229,20 @@ export class FormsPage implements OnInit {
 
             this.loaderService.presentLoading('Please wait')
 
-            this.predictionResults.cardio_positive = data["positive prediction"] + "%";
-            this.predictionResults.cardio_negative = data["negative prediction"] + "%";
+            this.predictionResults.cardio_positive = data["positive_prediction"] + "%"
+            this.predictionResults.cardio_negative = data["negative_prediction"] + "%"
+            this.predictionResults.bmr = data["bmr"]
+            this.predictionResults.tdee = data["tdee"]
 
             console.log(this.predictionResults)
 
-            const cardiopositve = this.predictionResults.cardio_positive;
-            const cardionegative = this.predictionResults.cardio_negative;
-            const diabetespositive = this.predictionResults.diabetic_positive_prob;
-            const diabetesnegative = this.predictionResults.diabetic_negative_prob;
-            const diabetic_prediction = this.predictionResults.diabetic_prediction;
+            const cardiopositve = this.predictionResults.cardio_positive
+            const cardionegative = this.predictionResults.cardio_negative
+            const bmr = this.predictionResults.bmr
+            const tdee = this.predictionResults.tdee
+            const diabetespositive = this.predictionResults.diabetic_positive_prob
+            const diabetesnegative = this.predictionResults.diabetic_negative_prob
+            const diabetic_prediction = this.predictionResults.diabetic_prediction
             const ob_therapy = this.predictionResults.ob_therapy
             const ob_stage = this.predictionResults.ob_stage
             const nutrition_info = this.predictionResults.nutrition_info
@@ -216,19 +254,17 @@ export class FormsPage implements OnInit {
             const weight = this.form.weight;
             const glucose = this.form.glu;
             const blood_pressure = this.form.bp;
-            const strokes = this.form.stroke;
-            const hypertension = this.form.hypertension;
             const cigs = this.form.cigs;
             const diastolic_blood_pressure = this.form.bp;
             const current_date = new Date()
             const timeStamp = current_date.getTime()
 
-            console.log(cigs)
-
             this.aftStore.doc(`users/${this.users.getUID()}`).update({
               data: firestore.FieldValue.arrayUnion({
                 cardionegative,
                 cardiopositve,
+                bmr,
+                tdee,
                 diabetespositive,
                 diabetesnegative,
                 diabetic_prediction,
@@ -243,8 +279,6 @@ export class FormsPage implements OnInit {
                 weight,
                 glucose,
                 blood_pressure,
-                strokes,
-                hypertension,
                 cigs,
                 diastolic_blood_pressure,
                 current_date,
