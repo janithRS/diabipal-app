@@ -3,8 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { PredictionResults } from "../../models/preditctionresults.model";
 import {Router} from '@angular/router'
 import { LoaderService } from '../loader-service.service';
-import {AngularFirestore} from "@angular/fire/firestore";
+import {AngularFirestore , AngularFirestoreCollection} from "@angular/fire/firestore";
 import {UsersService} from '../users.service'
+import { from } from 'rxjs';
 
 
 @Component({
@@ -16,9 +17,10 @@ export class ResultsPage implements OnInit {
 
 
   query_params: any
-  userOBstages : Array<any> = []
-  userGLUlevels : Array<any> = []
-  userBMIlevels : Array<any> = []
+  userOBstages : any
+  userGLUlevels : any
+  userBloodlevels : any
+  timestamp : any
 
   
 
@@ -28,33 +30,48 @@ export class ResultsPage implements OnInit {
     public router : Router,
     private aftStore : AngularFirestore,
     private user : UsersService
+
     ) { 
-    const posts = this.aftStore.doc(`users/${this.user.getUID()}`)
-    posts.valueChanges().subscribe(data => {
-      console.log(data["data"])
-      data["data"].forEach(d => {
-        this.userOBstages.push(d.ob_stage)
-        this.userGLUlevels.push(d.glucose)
-        this.userBMIlevels.push(d.weight/(d.height/100)*(d.height/100))
-      });
-    })
     this.activatedRoute.queryParams.subscribe((res)=>{
       this.query_params = JSON.parse(res.value)
       console.log(this.query_params)
+      this.timestamp = this.query_params.timestamp
     });
+    
+
+    const posts = this.aftStore.doc(`users/${this.user.getUID()}`)
+    
+    posts.valueChanges().subscribe(data => {
+      console.log(data["data"])
+      data["data"].forEach(d => {
+        if(this.timestamp == d.timeStamp){
+          this.userOBstages = d.ob_stage
+          this.userGLUlevels = d.glucose
+          this.userBloodlevels = d.blood_pressure
+        }
+      });
+    })
+
   }
 
   cvdPredictions(){
     let cardio = {
       tdee : this.query_params.tdee,
       bmr : this.query_params.bmr,
-      cardio_positive : this.query_params.cardio_positive
+      cardio_positive : this.query_params.cardio_positive,
+      ob_stage : this.query_params.ob_stage,
+      blood_levels : this.userBloodlevels,
+      glucose : this.userGLUlevels,
     }
     this.router.navigate(['/results/cardiovascular'], {
       queryParams: {
         value: JSON.stringify(cardio)
       },
     });
+  }
+
+  chckObStage(){
+    
   }
 
   ngOnInit() {

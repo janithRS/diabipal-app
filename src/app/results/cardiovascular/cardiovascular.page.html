@@ -44,6 +44,15 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-card [hidden]=ishidden>
+    <ion-card-header>
+      Calory intake suggestions
+    </ion-card-header>
+    <ion-card-content>
+      {{bmisuggestion}}
+    </ion-card-content>
+  </ion-card>
+
   <ion-fab horizontal="end" vertical="bottom" slot="fixed">
     <ion-fab-button>
       <ion-icon name="home" [routerLink]="['/tabs/tabs/feed']"></ion-icon>

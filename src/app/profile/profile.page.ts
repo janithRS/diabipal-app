@@ -31,6 +31,10 @@ export class ProfilePage implements OnInit {
         this.router.navigate(['/connect-doctor'])
     }
 
+    redirectTodoc(){
+        this.router.navigate(['/select-doctor'])
+    }
+
     logoutRoute() {
         this.users.signOut();
     }
