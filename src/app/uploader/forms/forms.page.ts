@@ -52,7 +52,8 @@ export class FormsPage implements OnInit {
   ngOnInit() {
     this.activateROute.queryParams.subscribe((res) => {
       this.queryParams = JSON.parse(res.value)
-      this.form.glu = Number('this.queryParams.RESULT')
+      // this.presentAlert(this.queryParams.RESULT)
+      this.form.glu = Number(this.queryParams.RESULT)
     });
   }
 
