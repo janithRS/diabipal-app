@@ -30,6 +30,8 @@ export class FormsPage implements OnInit {
   cardioPredictionURL: string
   diabetesPredictionURL: string
   formCorrect: boolean = true
+  postdata = {}
+  diabetes_pred: any
 
   constructor(
     private http: HttpClient,
@@ -98,41 +100,7 @@ export class FormsPage implements OnInit {
     await alert.present();
   }
 
-// selectTagpregnant(e) {
-  //   this.form.preg = e.detail.value;
-  // }
 
-  // selectTagStrokes(e) {
-  //   if(e.detail.value == "1"){
-  //     this.form.stroke = 1
-  //   }else {
-  //     this.form.stroke = 0
-  //   }
-  // }
-
-  // selectTagHypertesnion(e) {
-  //   if(e.detail.value == "1"){
-  //     this.form.hypertension = 1
-  //   }else {
-  //     this.form.hypertension = 0
-  //   }
-  // }
-
-  // selectTagDiabetes(e) {
-  //   if(e.detail.value == "1"){
-  //     this.form.diabetes = 1
-  //   }else {
-  //     this.form.diabetes = 0
-  //   }
-  // }
-
-  // selectTagBPmeds(e) {
-  //   if(e.detail.value == "1"){
-  //     this.form.bpmeds = 1
-  //   }else {
-  //     this.form.bpmeds = 0
-  //   }
-  // }
   // setheaders(): any {
   //   return {
   //     headers: new HttpHeaders()
@@ -141,6 +109,7 @@ export class FormsPage implements OnInit {
   //       .append("Access-Control-Allow-Origin", "*"),
   //   };
   // 
+
   displayResults() {
     this.router.navigate(['/results'], {
       queryParams: {
@@ -185,11 +154,12 @@ export class FormsPage implements OnInit {
 
 
   async createprediction(diabetesData) {
-    this.http
+    await this.http
       .post(this.diabetesPredictionURL, diabetesData)
-      .subscribe((data) => {
+      .toPromise()
+      .then(async (data) => {
 
-        this.loaderService.presentLoading('Please wait')
+        this.loaderService.presentLoading('Please wait2')
 
         this.predictionResults.diabetic_positive_prob = data["dm_prediction_prob_of_positive"] + "%";
         this.predictionResults.diabetic_negative_prob = data["dm_prediction_prob_of_negative"] + "%";
@@ -208,10 +178,11 @@ export class FormsPage implements OnInit {
         } else {
           diabeticStatus = 1;
         }
-        var postData = {
+
+        this.postdata = {
           height: this.form.height,
           weight: this.form.weight,
-          diaBp: this.form.bp,
+          diaBp: this.form.bp,  
           glu: this.form.glu,
           totChol: this.form.totChol,
           cigs: this.form.cigs,
@@ -221,78 +192,84 @@ export class FormsPage implements OnInit {
           exerciseRate: this.form.exercise
         };
 
-        console.log(postData)
-        console.log(diabetesData)
+        await this.createCVDprediction(this.postdata)
+        await this.updateFirestore()
+   
+      });
+  }
 
-        this.http
-          .post(this.cardioPredictionURL, postData)
-          .subscribe((data) => {
+  async createCVDprediction(postData){
 
-            this.loaderService.presentLoading('Please wait')
+    await this.http
+    .post(this.cardioPredictionURL, postData)
+    .toPromise().then((data) => {
 
+      this.loaderService.presentLoading('Please wait3')
             this.predictionResults.cardio_positive = data["positive_prediction"] + "%"
             this.predictionResults.cardio_negative = data["negative_prediction"] + "%"
             this.predictionResults.bmr = data["bmr"]
             this.predictionResults.tdee = data["tdee"]
-
             console.log(this.predictionResults)
+      })
 
-            const cardiopositve = this.predictionResults.cardio_positive
-            const cardionegative = this.predictionResults.cardio_negative
-            const bmr = this.predictionResults.bmr
-            const tdee = this.predictionResults.tdee
-            const diabetespositive = this.predictionResults.diabetic_positive_prob
-            const diabetesnegative = this.predictionResults.diabetic_negative_prob
-            const diabetic_prediction = this.predictionResults.diabetic_prediction
-            const ob_therapy = this.predictionResults.ob_therapy
-            const ob_stage = this.predictionResults.ob_stage
-            const nutrition_info = this.predictionResults.nutrition_info
-            const physical_info = this.predictionResults.physical_info
-            const sleep_info = this.predictionResults.sleep_info
-            const behavioral_info = this.predictionResults.behavioral_info
-            const smoking_info = this.predictionResults.smoking_info
-            const height = this.form.height;
-            const weight = this.form.weight;
-            const glucose = this.form.glu;
-            const blood_pressure = this.form.bp;
-            const cigs = this.form.cigs;
-            const diastolic_blood_pressure = this.form.bp;
-            const current_date = new Date()
-            const timeStamp = current_date.getTime()
-
-            this.aftStore.doc(`users/${this.users.getUID()}`).update({
-              data: firestore.FieldValue.arrayUnion({
-                cardionegative,
-                cardiopositve,
-                bmr,
-                tdee,
-                diabetespositive,
-                diabetesnegative,
-                diabetic_prediction,
-                ob_therapy,
-                ob_stage,
-                nutrition_info,
-                physical_info,
-                sleep_info,
-                behavioral_info,
-                smoking_info,
-                height,
-                weight,
-                glucose,
-                blood_pressure,
-                cigs,
-                diastolic_blood_pressure,
-                current_date,
-                timeStamp
-
-              }),
-            }).then(e => {
-              this.loaderService.presentLoading('Generating Results')
-              this.displayResults();
-            });
-          });
-      });
   }
 
+  async updateFirestore(){
+
+    const cardiopositve = this.predictionResults.cardio_positive
+    const cardionegative = this.predictionResults.cardio_negative
+    const bmr = this.predictionResults.bmr
+    const tdee = this.predictionResults.tdee
+    const diabetespositive = this.predictionResults.diabetic_positive_prob
+    const diabetesnegative = this.predictionResults.diabetic_negative_prob
+    const diabetic_prediction = this.predictionResults.diabetic_prediction
+    const ob_therapy = this.predictionResults.ob_therapy
+    const ob_stage = this.predictionResults.ob_stage
+    const nutrition_info = this.predictionResults.nutrition_info
+    const physical_info = this.predictionResults.physical_info
+    const sleep_info = this.predictionResults.sleep_info
+    const behavioral_info = this.predictionResults.behavioral_info
+    const smoking_info = this.predictionResults.smoking_info
+    const height = this.form.height;
+    const weight = this.form.weight;
+    const glucose = this.form.glu;
+    const blood_pressure = this.form.bp;
+    const cigs = this.form.cigs;
+    const diastolic_blood_pressure = this.form.bp;
+    const current_date = new Date()
+    const timeStamp = current_date.getTime()
+
+
+    await this.aftStore.doc(`users/${this.users.getUID()}`).update({
+      data: firestore.FieldValue.arrayUnion({
+        cardionegative,
+        cardiopositve,
+        bmr,
+        tdee,
+        diabetespositive,
+        diabetesnegative,
+        diabetic_prediction,
+        ob_therapy,
+        ob_stage,
+        nutrition_info,
+        physical_info,
+        sleep_info,
+        behavioral_info,
+        smoking_info,
+        height,
+        weight,
+        glucose,
+        blood_pressure,
+        cigs,
+        diastolic_blood_pressure,
+        current_date,
+        timeStamp
+
+      }),
+    }).then(e => {
+      this.loaderService.presentLoading('Generating Results')
+      this.displayResults();
+    });
+  }
 
 }
