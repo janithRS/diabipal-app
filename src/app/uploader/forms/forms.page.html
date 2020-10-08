@@ -15,7 +15,7 @@
   
         <ion-item>
           <ion-label position="flaoting">Sex</ion-label>
-          <ion-select (ionChange)="selectTagSex($event)" formControlName="sex" interface="popover">
+          <ion-select formControlName="sex" interface="popover">
             <ion-select-option value="1">Male</ion-select-option>
             <ion-select-option value="0">Female</ion-select-option>
           </ion-select>
@@ -56,7 +56,6 @@
         <ion-item>
           <ion-label position="floating">Cholesterol level</ion-label>
           <ion-input
-            (ionchange)="checkCholLevel()"
             type="number"
             formControlName="totChol"
             required
@@ -65,7 +64,7 @@
   
         <ion-item>
           <ion-label position="floating">Cigarrette intake</ion-label>
-          <ion-select (ionChange)="selectTagcigs($event)" formControlName="cigs" interface="popover">
+          <ion-select formControlName="cigs" interface="popover">
             <ion-select-option value="1">Yes</ion-select-option>
             <ion-select-option value="0">No</ion-select-option>
           </ion-select>
@@ -74,7 +73,7 @@
   
         <ion-item>
           <ion-label position="floating">Number of days you exercise</ion-label>
-          <ion-select (ionChange)="selectTagexercise($event)" formControlName="exercise" interface="popover">
+          <ion-select formControlName="exercise" interface="popover">
             <ion-select-option value="0">0</ion-select-option>
             <ion-select-option value="1">1</ion-select-option>
             <ion-select-option value="2">2</ion-select-option>
