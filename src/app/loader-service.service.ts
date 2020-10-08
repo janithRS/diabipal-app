@@ -15,7 +15,7 @@ export class LoaderService {
       const loading = await this.loadingController.create({
         cssClass: 'my-custom-class',
         message: msg,
-        duration: 5000
+        duration: 8000
       });
       await loading.present();
   

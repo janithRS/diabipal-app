@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-toolbar>
     <ion-title>Medical Details</ion-title>
@@ -8,116 +7,94 @@
 <ion-content>
   <ion-list>
     <ion-item-sliding>
+      <form [formGroup]="ionicForm" (ngSubmit)="submitForm()" novalidate>
         <ion-item>
-          <ion-label position="floating" required=true>Age</ion-label>
-          <ion-input type="number" [(ngModel)]="form.age" required></ion-input>
+          <ion-label position="floating">Age</ion-label>
+          <ion-input type="number" formControlName="age" required></ion-input>
         </ion-item>
-    
+  
         <ion-item>
-        <ion-label position="flaoting">Sex</ion-label>
-        <ion-select (ionChange)="selectTagSex($event)" interface="popover">
-          <ion-select-option value="1">Male</ion-select-option>
-          <ion-select-option value="0">Female</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Height (cm)</ion-label>
-        <ion-input type="number" [(ngModel)]="form.height"required></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Weight (kg)</ion-label>
-        <ion-input type="number" [(ngModel)]="form.weight"required></ion-input>
-      </ion-item>
-      <!-- <ion-item>
-        <ion-label position="floating">Glucose</ion-label>
-        <ion-input type="number" [(ngModel)]="form.glu" required></ion-input>
-      </ion-item> -->
-      <ion-item>
-        <ion-label position="floating">Blood Pressure</ion-label>
-        <ion-input type="number" [(ngModel)]="form.bp" required></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Skin Thickness</ion-label>
-        <ion-input type="number" [(ngModel)]="form.skin" required></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Insulin</ion-label>
-        <ion-input type="number" [(ngModel)]="form.ins" required></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">PED</ion-label>
-        <ion-input type="number" [(ngModel)]="form.ped" required></ion-input>
-      </ion-item>
-      <ion-item *ngIf="hidden">
-        <ion-label position="floating">Number of preganancies</ion-label>
-        <ion-input type="number" [(ngModel)]="form.preg" required></ion-input>
-      </ion-item>
-      
-      <!-- <ion-item>
-        <ion-label position="floating">Experienced strokes</ion-label>
-        <ion-select (ionChange)="selectTagStrokes($event)" interface="popover">
-          <ion-select-option value="1">Yes</ion-select-option>
-          <ion-select-option value="0">No</ion-select-option>
-        </ion-select>
-      </ion-item> -->
+          <ion-label position="flaoting">Sex</ion-label>
+          <ion-select (ionChange)="selectTagSex($event)" formControlName="sex" interface="popover">
+            <ion-select-option value="1">Male</ion-select-option>
+            <ion-select-option value="0">Female</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Height (cm)</ion-label>
+          <ion-input type="number" formControlName="height" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Weight (kg)</ion-label>
+          <ion-input type="number" formControlName="weight" required></ion-input>
+        </ion-item>
+        <!-- <ion-item>
+          <ion-label position="floating">Glucose</ion-label>
+          <ion-input type="number" [(ngModel)]="form.glu" required></ion-input>
+        </ion-item> -->
+        <ion-item>
+          <ion-label position="floating">Blood Pressure</ion-label>
+          <ion-input type="number" formControlName="bp" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Skin Thickness</ion-label>
+          <ion-input type="number" formControlName="skin" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Insulin</ion-label>
+          <ion-input type="number" formControlName="ins" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">PED</ion-label>
+          <ion-input type="number" formControlName="ped" required></ion-input>
+        </ion-item>
+        <ion-item *ngIf="hidden">
+          <ion-label position="floating">Number of preganancies</ion-label>
+          <ion-input type="number" formControlName="preg" required></ion-input>
+        </ion-item>  
+  
+        <ion-item>
+          <ion-label position="floating">Cholesterol level</ion-label>
+          <ion-input
+            (ionchange)="checkCholLevel()"
+            type="number"
+            formControlName="totChol"
+            required
+          ></ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label position="floating">Cigarrette intake</ion-label>
+          <ion-select (ionChange)="selectTagcigs($event)" formControlName="cigs" interface="popover">
+            <ion-select-option value="1">Yes</ion-select-option>
+            <ion-select-option value="0">No</ion-select-option>
+          </ion-select>
+          <!-- <ion-input type="number" [(ngModel)]="form.cigs" required></ion-input> -->
+        </ion-item>
+  
+        <ion-item>
+          <ion-label position="floating">Number of days you exercise</ion-label>
+          <ion-select (ionChange)="selectTagexercise($event)" formControlName="exercise" interface="popover">
+            <ion-select-option value="0">0</ion-select-option>
+            <ion-select-option value="1">1</ion-select-option>
+            <ion-select-option value="2">2</ion-select-option>
+            <ion-select-option value="3">3</ion-select-option>
+            <ion-select-option value="4">4</ion-select-option>
+            <ion-select-option value="5">5</ion-select-option>
+            <ion-select-option value="6">6</ion-select-option>
+          </ion-select>
+          <!-- <ion-input type="number" [(ngModel)]="form.cigs" required></ion-input> -->
+        </ion-item>
 
-      <!-- <ion-item>
-        <ion-label position="floating">Hypertension</ion-label>
-        <ion-select (ionChange)="selectTagHypertesnion($event)" interface="popover">
-          <ion-select-option value="1">Yes</ion-select-option>
-          <ion-select-option value="0">No</ion-select-option>
-        </ion-select>      
-      </ion-item> -->
-
-      <!-- <ion-item>
-        <ion-label position="floating">Currently using BP medication</ion-label>
-        <ion-select (ionChange)="selectTagBPmeds($event)" interface="popover">
-          <ion-select-option value="1">Yes</ion-select-option>
-          <ion-select-option value="0">No</ion-select-option>
-        </ion-select>       
-      </ion-item> -->
-
-      <ion-item>
-        <ion-label position="floating">Cholesterol level</ion-label>
-        <ion-input type="number" [(ngModel)]="form.totChol" required></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Cigarrette intake</ion-label>
-        <ion-select (ionChange)="selectTagcigs($event)" interface="popover">
-          <ion-select-option value="1">Yes</ion-select-option>
-          <ion-select-option value="0">No</ion-select-option>
-        </ion-select>
-        <!-- <ion-input type="number" [(ngModel)]="form.cigs" required></ion-input> -->
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Number of days you exercise</ion-label>
-        <ion-select (ionChange)="selectTagexercise($event)" interface="popover">
-          <ion-select-option value="0">0</ion-select-option>
-          <ion-select-option value="1">1</ion-select-option>
-          <ion-select-option value="2">2</ion-select-option>
-          <ion-select-option value="3">3</ion-select-option>
-          <ion-select-option value="4">4</ion-select-option>
-          <ion-select-option value="5">5</ion-select-option>
-          <ion-select-option value="6">6</ion-select-option>
-        </ion-select>
-        <!-- <ion-input type="number" [(ngModel)]="form.cigs" required></ion-input> -->
-      </ion-item>
-
-      <!-- <ion-item>
-        <ion-label>Previous strokes</ion-label>
-        <ion-toggle slot="end" name="stroke" color="dark" checked></ion-toggle>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Hypertension</ion-label>
-        <ion-toggle slot="end" name="hyp" color="dark" checked></ion-toggle>
-      </ion-item> -->
-
-      <ion-button class="ion-padding" color="primary" expand="full" (click)="calculatePredictions()">
-        Enter Details
-      </ion-button>
+        <ion-button
+          class="ion-padding"
+          color="primary"
+          expand="full"
+          type="submit"
+        >
+          Enter Details
+        </ion-button>
+      </form>
     </ion-item-sliding>
   </ion-list>
 </ion-content>
