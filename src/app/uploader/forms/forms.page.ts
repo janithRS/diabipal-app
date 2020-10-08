@@ -4,7 +4,6 @@ import { Observable } from "rxjs";
 import { Forms } from "../../../models/forms.model";
 import { UsersService } from "../../users.service";
 import { LoaderService } from "../../loader-service.service";
-import { async } from "@angular/core/testing";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { PredictionResults } from "../../../models/preditctionresults.model";
@@ -32,6 +31,8 @@ export class FormsPage implements OnInit {
   formCorrect: boolean = true
   postdata = {}
   diabetes_pred: any
+  ionicForm: FormGroup;
+
 
   constructor(
     private http: HttpClient,
@@ -45,17 +46,33 @@ export class FormsPage implements OnInit {
     private loadingController: LoadingController,
     private loaderService: LoaderService,
     private alertController : AlertController,
-    private user : UsersService
+    private user : UsersService,
+    private formBuilder: FormBuilder
   ) { }
 
   userID: string;
   queryParams: any
 
   ngOnInit() {
+    this.ionicForm = this.formBuilder.group({
+      age : [''],
+      height : [''],
+      weight: [''],
+      bp : [''],
+      skin : [''],
+      ins : [''],
+      ped : [''],
+      preg : [''],
+      totChol : [''],
+      exercise : [''],
+      cigs : [''],
+      sex : [''],
+
+    })
     this.activateROute.queryParams.subscribe((res) => {
       this.queryParams = JSON.parse(res.value)
       // this.presentAlert(this.queryParams.RESULT)
-      this.form.glu = Number(this.queryParams.RESULT)
+      // this.form.glu = Number(this.queryParams.RESULT)
     });
   }
 
@@ -100,15 +117,24 @@ export class FormsPage implements OnInit {
     await alert.present();
   }
 
+  submitForm(){
+    this.form.age = this.ionicForm.value.age
+    this.form.sex = this.ionicForm.value.sex
+    this.form.height = this.ionicForm.value.height
+    this.form.weight = this.ionicForm.value.weight
+    this.form.bp = this.ionicForm.value.bp
+    this.form.skin = this.ionicForm.value.skin
+    this.form.ins = this.ionicForm.value.ins
+    this.form.preg = this.ionicForm.value.preg
+    this.form.ped = this.ionicForm.value.ped
+    this.form.totChol = this.ionicForm.value.totChol
+    this.form.exercise = this.ionicForm.value.exercise
+    this.form.cigs = this.ionicForm.value.cigs
+    this.form.glu = 120
+    this.calculatePredictions()
 
-  // setheaders(): any {
-  //   return {
-  //     headers: new HttpHeaders()
-  //       .append("Content-Type", "application/json")
-  //       .append("Access-Control-Allow-Headers", "Content-Type")
-  //       .append("Access-Control-Allow-Origin", "*"),
-  //   };
-  // 
+    // this.ionicForm.reset()
+  }
 
   displayResults() {
     this.router.navigate(['/results'], {
@@ -159,7 +185,7 @@ export class FormsPage implements OnInit {
       .toPromise()
       .then(async (data) => {
 
-        this.loaderService.presentLoading('Please wait2')
+        this.loaderService.presentLoading('Please wait')
 
         this.predictionResults.diabetic_positive_prob = data["dm_prediction_prob_of_positive"] + "%";
         this.predictionResults.diabetic_negative_prob = data["dm_prediction_prob_of_negative"] + "%";
@@ -204,7 +230,7 @@ export class FormsPage implements OnInit {
     .post(this.cardioPredictionURL, postData)
     .toPromise().then((data) => {
 
-      this.loaderService.presentLoading('Please wait3')
+      this.loaderService.presentLoading('Please wait')
             this.predictionResults.cardio_positive = data["positive_prediction"] + "%"
             this.predictionResults.cardio_negative = data["negative_prediction"] + "%"
             this.predictionResults.bmr = data["bmr"]
