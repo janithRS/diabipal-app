@@ -77,32 +77,31 @@ export class FormsPage implements OnInit {
   }
 
 
-  selectTagSex(e) {
-    if(e.detail.value == "1"){
-      this.form.sex = 1
-    }else {
-      this.form.sex = 0
-    }
-  }
+  // selectTagSex(e) {
+  //   if(e.detail.value == "1"){
+  //     this.form.sex = 1
+  //   }else {
+  //     this.form.sex = 0
+  //   }
+  // }
 
-  selectTagexercise(e){
-    this.form.exercise = e.detail.value
-  }
+  // selectTagexercise(e){
+  //   this.form.exercise = e.detail.value
+  // }
 
-  selectTagcigs(e){
-    if(e.detail.value == "1"){
-      this.form.cigs = 1
-    }else {
-      this.form.cigs = 0
-    }
-  }
+  // selectTagcigs(e){
+  //   if(e.detail.value == "1"){
+  //     this.form.cigs = 1
+  //   }else {
+  //     this.form.cigs = 0
+  //   }
+  // }
 
-  checkCholLevel(){
-    if(this.form.age > 20){
-      if(this.form.totChol < 125){
-        this.formCorrect = false
+  checkCholLevel(totChol){
+    this.formCorrect = true
+    if(totChol < 125){
+        this.formCorrect = !this.formCorrect
         this.presentAlert("Check Cholesterol levels")
-      }
     }
   }
 
@@ -131,7 +130,12 @@ export class FormsPage implements OnInit {
     this.form.exercise = this.ionicForm.value.exercise
     this.form.cigs = this.ionicForm.value.cigs
     this.form.glu = 120
-    this.calculatePredictions()
+
+    this.checkCholLevel(this.form.totChol)
+
+    if(this.formCorrect){
+      this.calculatePredictions()
+    }
 
     // this.ionicForm.reset()
   }
@@ -145,8 +149,6 @@ export class FormsPage implements OnInit {
   }
 
   async calculatePredictions() {
-
-    this.checkCholLevel()
 
     if(this.formCorrect){
       this.loaderService.presentLoading("Please wait")
