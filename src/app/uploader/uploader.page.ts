@@ -85,13 +85,13 @@ export class UploaderPage implements OnInit {
             header: 'What would you like to add?',
             buttons: [
                 {
-                    text: 'Capture Image',
+                    text: 'Camera',
                     handler: () => {
                         this.captureImage();
                     }
                 },
                 {
-                    text: 'Choose from phone',
+                    text: 'Library',
                     handler: () => {
                         this.pickImages();
                     }
@@ -225,7 +225,7 @@ export class UploaderPage implements OnInit {
                         await this.showAlert(data['Error'])
                     }
                     else {
-                        await this.showAlert('Success!')
+                        await this.showAlert(data['RESULTS'])
                         // this.gotoForms(data)
                     }
                     
@@ -236,8 +236,6 @@ export class UploaderPage implements OnInit {
                 })
             });
         })
-
-        
     }
 
     async showAlert(message: string){
@@ -265,6 +263,7 @@ export class UploaderPage implements OnInit {
         else if ( fileExt == 'png') return { type: 'image/png'};
     }
 
+    
     // load files from cloud database
     // loadFilesFromCloud(){
     //     this.cloudFiles = [];
