@@ -85,18 +85,6 @@ export class FormsPage implements OnInit {
   //   }
   // }
 
-  // selectTagexercise(e){
-  //   this.form.exercise = e.detail.value
-  // }
-
-  // selectTagcigs(e){
-  //   if(e.detail.value == "1"){
-  //     this.form.cigs = 1
-  //   }else {
-  //     this.form.cigs = 0
-  //   }
-  // }
-
   checkCholLevel(totChol){
     this.formCorrect = true
     if(totChol < 125){
