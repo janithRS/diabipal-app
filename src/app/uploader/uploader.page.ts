@@ -163,12 +163,33 @@ export class UploaderPage implements OnInit {
         }
     }
 
-    deleteFile(f: FileEntry) {
-        const path = f.nativeURL.substr(0, f.nativeURL.lastIndexOf('/') + 1);
-        this.file.removeFile(path, f.name).then(() => {
-            this.loadFiles();
-        }, err => console.log('Error in remove: ', err));
+
+    async deleteFile(f: FileEntry) {
+        const alert = await this.alert.create({  
+            message: 'Are you sure you want to delete this photo?',
+            buttons: [
+                {
+                    text: 'Yes',
+                    handler: ()=>{
+                        const path = f.nativeURL.substr(0, f.nativeURL.lastIndexOf('/') + 1);
+                        this.file.removeFile(path, f.name).then(async res => {
+                                this.loadFiles();
+                                const toast = await this.toast.create({
+                                    duration: 2000,
+                                    message: 'Filed deleted successfully!'
+                                });
+                                toast.present();
+                            })
+                    }
+                },
+                {
+                    text: 'No',
+                    role: 'cancel'
+                }
+            ]  
+        }).then(alert => alert.present());
     }
+
 
     // save file to database as a blob 
     async uploadFile(f: FileEntry){
@@ -226,6 +247,7 @@ export class UploaderPage implements OnInit {
                     }
                     else {
                         await this.showAlert(data['RESULTS'])
+                        console.log("Final output of the pipeline", data)
                         // this.gotoForms(data)
                     }
                     
@@ -245,6 +267,22 @@ export class UploaderPage implements OnInit {
         })
         await alert.present()
     }
+
+    async showConfirmation() {  
+        const alert = await this.alert.create({  
+            message: 'Are you sure you want to delete this photo?',
+            buttons: [
+                {
+                    text: 'Yes'
+                },
+                {
+                    text: 'No',
+                    role: 'cancel'
+                }
+            ]  
+        });  
+        await alert.present();  
+      }
 
     gotoForms(data){
         this.router.navigate(['/tabs/tabs/uploader/forms'],
@@ -299,6 +337,5 @@ export class UploaderPage implements OnInit {
     //     });
     // }
 
-    
 
 }
