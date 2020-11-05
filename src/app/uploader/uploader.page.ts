@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform, ActionSheetController, ToastController } from '@ionic/angular';
+import { Platform, ActionSheetController, ToastController, AlertController } from '@ionic/angular';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { MediaCapture, MediaFile, CaptureError } from '@ionic-native/media-capture/ngx';
 import { File, FileEntry } from '@ionic-native/File/ngx';
@@ -21,6 +21,7 @@ const MEDIA_FOLDER_NAME = 'my_media';
     templateUrl: './uploader.page.html',
     styleUrls: ['./uploader.page.scss'],
 })
+
 export class UploaderPage implements OnInit {
 
     files = [];
@@ -28,6 +29,7 @@ export class UploaderPage implements OnInit {
     uploadProgress = 0;
     cloudFiles = [];
     dbUrl: String;
+    result: any;
 
     urls : "";
     // imageId: "";
@@ -44,7 +46,8 @@ export class UploaderPage implements OnInit {
         private fireStore: AngularFirestore,
         private http: HttpClient,
         private router: Router,
-        private loader: LoaderService
+        private loader: LoaderService,
+        public alert: AlertController
     ) { }
 
     // list the content of the folder
@@ -82,13 +85,13 @@ export class UploaderPage implements OnInit {
             header: 'What would you like to add?',
             buttons: [
                 {
-                    text: 'Capture Image',
+                    text: 'Camera',
                     handler: () => {
                         this.captureImage();
                     }
                 },
                 {
-                    text: 'Load multiple',
+                    text: 'Library',
                     handler: () => {
                         this.pickImages();
                     }
@@ -160,12 +163,33 @@ export class UploaderPage implements OnInit {
         }
     }
 
-    deleteFile(f: FileEntry) {
-        const path = f.nativeURL.substr(0, f.nativeURL.lastIndexOf('/') + 1);
-        this.file.removeFile(path, f.name).then(() => {
-            this.loadFiles();
-        }, err => console.log('Error in remove: ', err));
+
+    async deleteFile(f: FileEntry) {
+        const alert = await this.alert.create({  
+            message: 'Are you sure you want to delete this photo?',
+            buttons: [
+                {
+                    text: 'Yes',
+                    handler: ()=>{
+                        const path = f.nativeURL.substr(0, f.nativeURL.lastIndexOf('/') + 1);
+                        this.file.removeFile(path, f.name).then(async res => {
+                                this.loadFiles();
+                                const toast = await this.toast.create({
+                                    duration: 2000,
+                                    message: 'Filed deleted successfully!'
+                                });
+                                toast.present();
+                            })
+                    }
+                },
+                {
+                    text: 'No',
+                    role: 'cancel'
+                }
+            ]  
+        }).then(alert => alert.present());
     }
+
 
     // save file to database as a blob 
     async uploadFile(f: FileEntry){
@@ -181,8 +205,6 @@ export class UploaderPage implements OnInit {
         .substring(2,8);
 
         const imageId = new Date().getTime() + randomID;
-
-        
 
         //  save images inside files folder
         const uploadTask = this.storage.upload(`files/${imageId}`, fileBlob);
@@ -210,24 +232,57 @@ export class UploaderPage implements OnInit {
                 this.loader.presentLoading('Please wait')
                 this.dbUrl = res
                 console.log(this.dbUrl)
-                console.log("inside upload function", this.dbUrl)
                 // return this.dbUrl;
                 let data = {
                     url : this.dbUrl.toString()
                 }
                 this.http.post("https://diabipal-ocr.herokuapp.com/url", data)
-                .subscribe(data => {
+                // this.http.post("http://127.0.0.1:5000/url", data)
+                .subscribe(async data => {
+                    this.result = data
                     this.loader.presentLoading('Generating results')
-                    this.gotoForms(data)
+                    console.log(data) 
+                    if (data['Error'] != ''){
+                        await this.showAlert(data['Error'])
+                    }
+                    else {
+                        await this.showAlert(data['RESULTS'])
+                        console.log("Final output of the pipeline", data)
+                        // this.gotoForms(data)
+                    }
+                    
+                    // this.gotoForms(data)
                 }, error => {
                     console.log(error);
         
                 })
             });
         })
-
-        
     }
+
+    async showAlert(message: string){
+        const alert = await this.alert.create({
+          message,
+          buttons: ['OK']
+        })
+        await alert.present()
+    }
+
+    async showConfirmation() {  
+        const alert = await this.alert.create({  
+            message: 'Are you sure you want to delete this photo?',
+            buttons: [
+                {
+                    text: 'Yes'
+                },
+                {
+                    text: 'No',
+                    role: 'cancel'
+                }
+            ]  
+        });  
+        await alert.present();  
+      }
 
     gotoForms(data){
         this.router.navigate(['/tabs/tabs/uploader/forms'],
@@ -246,6 +301,7 @@ export class UploaderPage implements OnInit {
         else if ( fileExt == 'png') return { type: 'image/png'};
     }
 
+    
     // load files from cloud database
     // loadFilesFromCloud(){
     //     this.cloudFiles = [];
@@ -281,6 +337,5 @@ export class UploaderPage implements OnInit {
     //     });
     // }
 
-    
 
 }
