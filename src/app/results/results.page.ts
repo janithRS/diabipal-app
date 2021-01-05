@@ -6,6 +6,7 @@ import { LoaderService } from '../loader-service.service';
 import {AngularFirestore , AngularFirestoreCollection} from "@angular/fire/firestore";
 import {UsersService} from '../users.service'
 import { from } from 'rxjs';
+import {map} from 'rxjs/operators'
 
 
 @Component({
@@ -17,7 +18,7 @@ export class ResultsPage implements OnInit {
 
 
   query_params: any
-  userOBstages : any
+  userOBstages : Array<number> = []
   userGLUlevels : any
   userBloodlevels : any
   timestamp : any
@@ -44,15 +45,18 @@ export class ResultsPage implements OnInit {
     posts.valueChanges().subscribe(data => {
       console.log(data["data"])
       data["data"].forEach(d => {
-        if(this.timestamp == d.timeStamp){
-          this.userOBstages = d.ob_stage
-          this.userGLUlevels = d.glucose
-          this.userBloodlevels = d.blood_pressure
-        }
+        // if(this.timestamp == d.timeStamp){
+          // this.userOBstages.push(d.ob_stage)
+          this.userOBstages.push(d.ob_stage)
+        //   this.userGLUlevels = d.glucose
+        //   this.userBloodlevels = d.blood_pressure
+        // }
       });
+      console.log(this.userOBstages)
     })
 
   }
+
 
   cvdPredictions(){
     let cardio = {
@@ -62,6 +66,7 @@ export class ResultsPage implements OnInit {
       ob_stage : this.query_params.ob_stage,
       blood_levels : this.userBloodlevels,
       glucose : this.userGLUlevels,
+      ob_stage_levels: this.userOBstages
     }
     this.router.navigate(['/results/cardiovascular'], {
       queryParams: {
@@ -70,11 +75,9 @@ export class ResultsPage implements OnInit {
     });
   }
 
-  chckObStage(){
-    
-  }
 
   ngOnInit() {
+
   }
 
 }

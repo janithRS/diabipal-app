@@ -10,7 +10,7 @@
 
 <ion-content>
 
-  <ion-card>
+  <!-- <ion-card>
     <ion-card-header>
       <ion-card-title>Cardiovascular Prediction</ion-card-title>
     </ion-card-header>
@@ -19,7 +19,7 @@
       </h3>
       <h3>Positive prediction: {{query_params.cardio_positive}}</h3>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
  
   <ion-card>
     <ion-card-header>
@@ -52,6 +52,10 @@
       {{bmisuggestion}}
     </ion-card-content>
   </ion-card>
+
+  <div [ngStyle]="{'height': '200px', 'margin-right': '10px'}"> 
+    <canvas #barChart></canvas>
+  </div>
 
   <ion-fab horizontal="end" vertical="bottom" slot="fixed">
     <ion-fab-button>
