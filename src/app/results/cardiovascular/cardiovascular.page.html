@@ -22,8 +22,9 @@
   </ion-card> -->
  
   <ion-card>
-    <ion-card-header>
+    <ion-card-header class="BMRheader">
       Basal Metabolic rate 
+        <ion-icon class="BMRicon"  name="help-sharp" (click)="showBMRdescription()"></ion-icon>
     </ion-card-header>
     <ion-card-content>
       <p><b>Estimation of the number of calories your body needs to accomplish its most basic
@@ -33,8 +34,9 @@
   </ion-card>
 
   <ion-card>
-    <ion-card-header>
+    <ion-card-header class="BMRheader">
       Total Daily Engery Expenditure
+      <ion-icon class="BMRicon"  name="help-sharp" (click)="showTDEEdescription()"></ion-icon>
     </ion-card-header>
     <ion-card-content>
       <p>
@@ -44,16 +46,20 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card [hidden]=ishidden>
+  <ion-card [ngStyle]="{'background-color' : cardColor}">
     <ion-card-header>
-      Calory intake suggestions
+      <b>Calory intake suggestions</b>
     </ion-card-header>
     <ion-card-content>
-      {{bmisuggestion}}
+      <p><b>{{bmisuggestion}}</b></p>
+      <p>*The above suggestions are based on the recent BMI values*</p>
     </ion-card-content>
   </ion-card>
 
-  <div [ngStyle]="{'height': '200px', 'margin-right': '10px'}"> 
+  <div [ngStyle]="{'height': 'fit-content', 'margin-right': '10px'}"> 
+    <ion-header>
+      <b>BMI charts</b>
+    </ion-header>
     <canvas #barChart></canvas>
   </div>
 
